@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DIA — Panel Ejecutivo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+    --red: #E31E24;
+    --red-dim: rgba(227,30,36,0.12);
+    --red-glow: rgba(227,30,36,0.25);
+    --bg: #0d0d0f;
+    --bg-2: #131316;
+    --bg-3: #1a1a1f;
+    --bg-4: #212127;
+    --border: rgba(255,255,255,0.07);
+    --border-2: rgba(255,255,255,0.12);
+    --text: #f0f0f2;
+    --text-2: #8888a0;
+    --text-3: #55555f;
+    --green: #00d68f;
+    --green-dim: rgba(0,214,143,0.1);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.1);
+    --blue: #4a9eff;
+    --blue-dim: rgba(74,158,255,0.1);
+    --mono: 'JetBrains Mono', monospace;
+    --display: 'Syne', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+    font-family: var(--display);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Subtle grain overlay */
+body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+}
+
+/* ── HEADER ── */
+.header {
+    position: sticky; top: 0; z-index: 200;
+    background: rgba(13,13,15,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-2);
+    padding: 0 2rem;
+    height: 58px;
+    display: flex; align-items: center; justify-content: space-between;
+}
+
+.header-left { display: flex; align-items: center; gap: 2rem; }
+
+.logo-block { display: flex; align-items: center; gap: 0.875rem; }
+.logo-mark {
+    width: 36px; height: 36px; background: var(--red);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; font-weight: 800; letter-spacing: 1px; color: white;
+    box-shadow: 0 0 20px var(--red-glow);
+}
+.logo-text { font-size: 0.7rem; font-weight: 600; letter-spacing: 2px; color: var(--text-2); text-transform: uppercase; }
+.logo-role { font-size: 0.65rem; color: var(--text-3); letter-spacing: 1px; }
+
+.header-divider { width: 1px; height: 24px; background: var(--border-2); }
+
+.live-indicator {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.68rem; font-family: var(--mono); color: var(--text-2); letter-spacing: 0.5px;
+}
+.live-dot {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+    animation: livePulse 2.5s ease-in-out infinite;
+}
+@keyframes livePulse { 0%,100%{ opacity:1; box-shadow:0 0 8px var(--green); } 50%{ opacity:0.5; box-shadow:0 0 3px var(--green); } }
+
+.header-right { display: flex; align-items: center; gap: 1.5rem; }
+.header-time { font-family: var(--mono); font-size: 0.8rem; color: var(--text-2); }
+
+.header-actions { display: flex; gap: 0.5rem; }
+.hbtn {
+    padding: 0.375rem 0.875rem; border-radius: 6px; font-size: 0.72rem;
+    font-family: var(--display); font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border-2); background: var(--bg-3);
+    color: var(--text-2); transition: all 0.15s; letter-spacing: 0.3px;
+}
+.hbtn:hover { border-color: var(--red); color: var(--text); }
+.hbtn.primary {
+    background: var(--red); border-color: var(--red); color: white;
+    box-shadow: 0 2px 12px var(--red-glow);
+}
+.hbtn.primary:hover { box-shadow: 0 4px 20px var(--red-glow); }
+
+/* ── LAYOUT ── */
+.main {
+    position: relative; z-index: 1;
+    padding: 1.75rem 2rem;
+    max-width: 1600px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+/* Section label */
+.section-label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--text-3);
+    margin-bottom: 0.875rem;
+    display: flex; align-items: center; gap: 0.75rem;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ── NETWORK KPI STRIP ── */
+.kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+}
+.kpi-cell {
+    background: var(--bg-2);
+    padding: 1.25rem 1.5rem;
+    position: relative;
+    transition: background 0.15s;
+    cursor: default;
+}
+.kpi-cell:hover { background: var(--bg-3); }
+.kpi-cell.primary { background: var(--bg-3); }
+.kpi-cell.alert { background: rgba(227,30,36,0.05); }
+
+.kpi-label {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 0.625rem;
+}
+.kpi-value {
+    font-family: var(--mono); font-size: 1.75rem; font-weight: 500;
+    color: var(--text); line-height: 1; margin-bottom: 0.5rem;
+}
+.kpi-value.red { color: var(--red); }
+.kpi-value.green { color: var(--green); }
+.kpi-value.amber { color: var(--amber); }
+.kpi-meta {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-family: var(--mono); font-size: 0.68rem;
+}
+.delta { font-weight: 500; }
+.delta.up { color: var(--green); }
+.delta.down { color: var(--red); }
+.delta-period { color: var(--text-3); }
+
+.kpi-accent-bar {
+    position: absolute; bottom: 0; left: 0;
+    height: 2px; background: var(--red);
+    transition: width 1.2s ease;
+}
+
+/* ── DECISIONS PANEL ── */
+.decisions-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 1rem;
+}
+
+.decisions-panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.decisions-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.decisions-title {
+    font-size: 0.95rem; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 0.625rem;
+}
+.decisions-badge {
+    background: var(--red); color: white;
+    font-size: 0.65rem; font-family: var(--mono); font-weight: 600;
+    padding: 0.125rem 0.5rem; border-radius: 10px;
+}
+.decisions-meta { font-size: 0.72rem; color: var(--text-3); font-family: var(--mono); }
+
+.decision-row {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 3px 1fr auto;
+    gap: 1rem; align-items: center;
+    transition: background 0.15s;
+    cursor: pointer;
+}
+.decision-row:hover { background: var(--bg-3); }
+.decision-row:last-child { border-bottom: none; }
+
+.decision-priority-bar { width: 3px; border-radius: 3px; align-self: stretch; min-height: 60px; }
+.priority-critical { background: var(--red); box-shadow: 0 0 8px var(--red-glow); }
+.priority-high { background: var(--amber); }
+.priority-medium { background: var(--blue); }
+
+.decision-body { flex: 1; min-width: 0; }
+.decision-store {
+    font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--text-3); margin-bottom: 0.25rem;
+}
+.decision-product { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.375rem; }
+.decision-detail { font-family: var(--mono); font-size: 0.75rem; color: var(--text-2); }
+.decision-detail span { color: var(--text); }
+.decision-tags { margin-top: 0.5rem; display: flex; gap: 0.375rem; flex-wrap: wrap; }
+.dtag {
+    font-size: 0.65rem; font-family: var(--mono);
+    padding: 0.15rem 0.5rem; border-radius: 4px;
+    border: 1px solid var(--border-2); color: var(--text-3);
+}
+.dtag.red { border-color: rgba(227,30,36,0.3); color: var(--red); background: var(--red-dim); }
+.dtag.green { border-color: rgba(0,214,143,0.2); color: var(--green); background: var(--green-dim); }
+.dtag.amber { border-color: rgba(245,158,11,0.2); color: var(--amber); background: var(--amber-dim); }
+
+.decision-action { flex-shrink: 0; text-align: right; }
+.decision-recovery { font-family: var(--mono); font-size: 1.1rem; font-weight: 600; color: var(--green); }
+.decision-recovery-label { font-size: 0.65rem; color: var(--text-3); margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+.approve-btn {
+    display: block; width: 100%; margin-top: 0.5rem;
+    padding: 0.5rem 1rem; border-radius: 6px;
+    background: var(--red); color: white; border: none;
+    font-family: var(--display); font-size: 0.72rem; font-weight: 600;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    letter-spacing: 0.3px;
+}
+.approve-btn:hover { box-shadow: 0 4px 16px var(--red-glow); transform: translateY(-1px); }
+.approve-btn.approved { background: var(--green); box-shadow: none; }
+.preview-btn {
+    display: block; width: 100%; margin-top: 0.375rem;
+    padding: 0.375rem 1rem; border-radius: 6px;
+    background: transparent; color: var(--text-3);
+    border: 1px solid var(--border-2);
+    font-family: var(--display); font-size: 0.7rem;
+    cursor: pointer; transition: all 0.15s;
+}
+.preview-btn:hover { color: var(--text); border-color: var(--border-2); }
+
+/* ── NETWORK OVERVIEW PANEL ── */
+.network-panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+}
+.network-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem; font-weight: 700;
+}
+.network-row {
+    padding: 0.875rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer; transition: background 0.15s;
+}
+.network-row:hover { background: var(--bg-3); }
+.network-row:last-child { border-bottom: none; }
+.network-row-top {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 0.375rem;
+}
+.network-store-name { font-size: 0.8rem; font-weight: 700; }
+.network-revenue { font-family: var(--mono); font-size: 0.875rem; font-weight: 500; color: var(--text); }
+.network-row-bottom {
+    display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
+}
+.network-store-type { font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.3px; }
+.network-bar-wrap { flex: 1; height: 4px; background: var(--bg-4); border-radius: 2px; overflow: hidden; }
+.network-bar { height: 100%; border-radius: 2px; transition: width 1s ease; }
+.network-metrics { display: flex; gap: 0.75rem; }
+.nmval { font-family: var(--mono); font-size: 0.68rem; }
+.nmval.danger { color: var(--red); }
+.nmval.good { color: var(--green); }
+.health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-left: 0.375rem; }
+
+/* ── BOTTOM ROW ── */
+.bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 400px;
+    gap: 1rem;
+}
+
+/* ── WASTE TREND CHART ── */
+.chart-panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+}
+.chart-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.chart-title { font-size: 0.875rem; font-weight: 700; }
+.chart-legend { display: flex; gap: 1rem; }
+.legend-item { display: flex; align-items: center; gap: 0.375rem; font-size: 0.68rem; color: var(--text-3); font-family: var(--mono); }
+.legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+.bar-chart-wrap { padding: 1.25rem 1.5rem 0.5rem; }
+.bar-chart { display: flex; align-items: flex-end; gap: 0.5rem; height: 120px; }
+.bar-group { flex: 1; display: flex; gap: 2px; align-items: flex-end; }
+.bar {
+    flex: 1; border-radius: 3px 3px 0 0;
+    transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    cursor: pointer; position: relative;
+}
+.bar:hover::after {
+    content: attr(data-val);
+    position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+    background: var(--bg-4); border: 1px solid var(--border-2);
+    color: var(--text); font-family: var(--mono); font-size: 0.65rem;
+    padding: 0.2rem 0.4rem; border-radius: 4px; white-space: nowrap; z-index: 10;
+}
+.bar-risk { background: rgba(227,30,36,0.5); }
+.bar-risk:hover { background: rgba(227,30,36,0.8); }
+.bar-recovered { background: rgba(0,214,143,0.5); }
+.bar-recovered:hover { background: rgba(0,214,143,0.8); }
+
+.bar-labels { display: flex; gap: 0.5rem; padding: 0.625rem 1.5rem 1rem; }
+.bar-label { flex: 1; text-align: center; font-size: 0.65rem; font-family: var(--mono); color: var(--text-3); }
+
+.chart-footer {
+    padding: 0.875rem 1.5rem;
+    border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.chart-stat { }
+.chart-stat-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 500; }
+.chart-stat-lbl { font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.5px; margin-top: 0.15rem; }
+
+/* ── AI WINS PANEL ── */
+.wins-panel {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+}
+.wins-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+}
+.wins-title { font-size: 0.875rem; font-weight: 700; }
+.wins-period { font-family: var(--mono); font-size: 0.68rem; color: var(--text-3); }
+
+.win-row {
+    padding: 0.875rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+}
+.win-row:last-child { border-bottom: none; }
+.win-rank { font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); width: 20px; flex-shrink: 0; }
+.win-body { flex: 1; min-width: 0; }
+.win-name { font-size: 0.8rem; font-weight: 600; margin-bottom: 0.2rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.win-detail { font-family: var(--mono); font-size: 0.68rem; color: var(--text-3); }
+.win-metric { text-align: right; flex-shrink: 0; }
+.win-coc { font-family: var(--mono); font-size: 1rem; font-weight: 600; color: var(--green); }
+.win-coc-lbl { font-size: 0.62rem; color: var(--text-3); }
+
+/* ── STORE DETAIL CARD ── */
+.store-scorecards {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+    background: var(--border); border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--border);
+}
+.scorecard {
+    background: var(--bg-2); padding: 1rem 1.25rem;
+    cursor: pointer; transition: background 0.15s;
+}
+.scorecard:hover { background: var(--bg-3); }
+.sc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem; }
+.sc-name { font-size: 0.8rem; font-weight: 700; }
+.sc-type { font-size: 0.62rem; color: var(--text-3); letter-spacing: 0.5px; margin-top: 0.15rem; }
+.sc-health {
+    font-size: 0.65rem; font-family: var(--mono); font-weight: 600;
+    padding: 0.2rem 0.5rem; border-radius: 4px;
+}
+.health-ok { background: var(--green-dim); color: var(--green); }
+.health-warn { background: var(--amber-dim); color: var(--amber); }
+.health-crit { background: var(--red-dim); color: var(--red); }
+
+.sc-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+.sc-m { }
+.sc-m-val { font-family: var(--mono); font-size: 0.9rem; font-weight: 500; }
+.sc-m-lbl { font-size: 0.62rem; color: var(--text-3); margin-top: 0.1rem; }
+
+.sc-footer { margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+.sc-ai-opp { font-size: 0.72rem; }
+.sc-ai-opp strong { color: var(--green); font-family: var(--mono); }
+.sc-manager { font-size: 0.65rem; color: var(--text-3); }
+
+/* ── ALERTS BAR ── */
+.alerts-bar {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 0.875rem 1.5rem;
+    display: flex; align-items: center; gap: 1.5rem;
+    overflow-x: auto;
+}
+.alerts-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); flex-shrink: 0; }
+.alerts-scroll { display: flex; gap: 1rem; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+.alert-chip {
+    display: flex; align-items: center; gap: 0.5rem;
+    padding: 0.375rem 0.75rem; border-radius: 6px;
+    font-size: 0.72rem; font-family: var(--mono); white-space: nowrap;
+    cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+    border: 1px solid;
+}
+.alert-chip.crit { background: var(--red-dim); border-color: rgba(227,30,36,0.3); color: var(--red); }
+.alert-chip.warn { background: var(--amber-dim); border-color: rgba(245,158,11,0.2); color: var(--amber); }
+.alert-chip.info { background: var(--blue-dim); border-color: rgba(74,158,255,0.2); color: var(--blue); }
+.alert-chip:hover { transform: translateY(-1px); }
+
+/* ── MODAL ── */
+.modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
+    display: none; align-items: center; justify-content: center; padding: 1.5rem;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+    background: var(--bg-2); border: 1px solid var(--border-2);
+    border-radius: 16px; max-width: 520px; width: 100%;
+    max-height: 90vh; overflow-y: auto;
+    animation: modalIn 0.2s ease-out;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+@keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(8px); } to { opacity:1; transform:scale(1) translateY(0); } }
+.modal-header {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: flex-start;
+}
+.modal-title { font-size: 1.1rem; font-weight: 700; }
+.modal-close-btn {
+    background: var(--bg-4); border: 1px solid var(--border-2);
+    color: var(--text-2); border-radius: 6px; width: 28px; height: 28px;
+    cursor: pointer; font-size: 0.875rem; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.modal-close-btn:hover { color: var(--text); }
+.modal-body { padding: 1.5rem; }
+.modal-metric-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.25rem; }
+.modal-metric { background: var(--bg-3); border-radius: 8px; padding: 1rem; }
+.modal-metric-val { font-family: var(--mono); font-size: 1.5rem; font-weight: 500; margin-bottom: 0.25rem; }
+.modal-metric-lbl { font-size: 0.68rem; color: var(--text-3); letter-spacing: 0.5px; }
+.modal-section { margin-bottom: 1.25rem; }
+.modal-section-title { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.75rem; }
+.strat-compare { display: flex; flex-direction: column; gap: 0.5rem; }
+.strat-row { display: flex; align-items: center; gap: 0.75rem; }
+.strat-name { font-size: 0.78rem; width: 140px; flex-shrink: 0; }
+.strat-bar-wrap { flex: 1; background: var(--bg-4); border-radius: 2px; height: 20px; overflow: hidden; position: relative; }
+.strat-bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 0.5rem; }
+.strat-bar-fill span { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: white; }
+.strat-badge { font-family: var(--mono); font-size: 0.68rem; width: 50px; text-align: right; }
+.modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+.mbtn { flex: 1; padding: 0.75rem; border-radius: 8px; font-family: var(--display); font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+.mbtn.primary { background: var(--red); color: white; }
+.mbtn.primary:hover { box-shadow: 0 4px 16px var(--red-glow); }
+.mbtn.ghost { background: var(--bg-4); color: var(--text-2); border: 1px solid var(--border-2); }
+.mbtn.ghost:hover { color: var(--text); }
+
+/* Entry animation */
+.animate-in { animation: fadeSlideIn 0.4s ease-out both; }
+@keyframes fadeSlideIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+.delay-1 { animation-delay: 0.05s; }
+.delay-2 { animation-delay: 0.1s; }
+.delay-3 { animation-delay: 0.15s; }
+.delay-4 { animation-delay: 0.2s; }
+.delay-5 { animation-delay: 0.25s; }
+.delay-6 { animation-delay: 0.3s; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header class="header">
+    <div class="header-left">
+        <div class="logo-block">
+            <div class="logo-mark">DIA</div>
+            <div>
+                <div class="logo-text">Panel Ejecutivo</div>
+                <div class="logo-role">Presidencia · Red Argentina</div>
+            </div>
+        </div>
+        <div class="header-divider"></div>
+        <div class="live-indicator">
+            <div class="live-dot"></div>
+            <span>EN VIVO · ACTUALIZADO</span>
+            <span id="header-time" style="color:var(--text);">—</span>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="header-time" id="header-date">—</div>
+        <div class="header-actions">
+            <button class="hbtn" onclick="exportDashboard()">↓ Exportar</button>
+            <button class="hbtn" onclick="window.location.href='dia-enhanced.html'">⬡ Ops</button>
+            <button class="hbtn primary" onclick="approveAll()">✓ Aprobar Todo</button>
+        </div>
+    </div>
+</header>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+    <!-- 1. NETWORK KPI STRIP -->
+    <div class="animate-in delay-1">
+        <div class="section-label">Red Nacional · 6 Sucursales · KPIs Consolidados</div>
+        <div class="kpi-strip" id="kpi-strip"></div>
+    </div>
+
+    <!-- 2. DECISIONS + NETWORK -->
+    <div class="decisions-wrapper animate-in delay-2">
+        <!-- Decisions Panel -->
+        <div class="decisions-panel">
+            <div class="decisions-header">
+                <div class="decisions-title">
+                    Decisiones Pendientes de Aprobación
+                    <span class="decisions-badge" id="decisions-count">—</span>
+                </div>
+                <div class="decisions-meta">Generadas por Motor IA · Ordenadas por impacto</div>
+            </div>
+            <div id="decisions-list"></div>
+        </div>
+        <!-- Network Overview -->
+        <div class="network-panel">
+            <div class="network-header">Desempeño por Sucursal</div>
+            <div id="network-rows"></div>
+        </div>
+    </div>
+
+    <!-- 3. STORE SCORECARDS -->
+    <div class="animate-in delay-3">
+        <div class="section-label">Tarjetas de Sucursal · Click para detalle</div>
+        <div class="store-scorecards" id="store-scorecards"></div>
+    </div>
+
+    <!-- 4. BOTTOM ROW -->
+    <div class="bottom-row animate-in delay-4">
+        <!-- Waste Trend -->
+        <div class="chart-panel">
+            <div class="chart-header">
+                <div class="chart-title">Valor en Riesgo vs. Recuperado por IA</div>
+                <div class="chart-legend">
+                    <div class="legend-item"><div class="legend-dot" style="background:rgba(227,30,36,0.5);"></div>En Riesgo</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:rgba(0,214,143,0.5);"></div>Recuperado</div>
+                </div>
+            </div>
+            <div class="bar-chart-wrap">
+                <div class="bar-chart" id="waste-chart"></div>
+            </div>
+            <div class="bar-labels" id="waste-chart-labels"></div>
+            <div class="chart-footer" id="waste-chart-footer"></div>
+        </div>
+
+        <!-- AI Wins -->
+        <div class="wins-panel">
+            <div class="wins-header">
+                <div class="wins-title">🏆 Top Resultados IA del Mes</div>
+                <div class="wins-period">Retorno Cash/Cash</div>
+            </div>
+            <div id="wins-list"></div>
+        </div>
+
+        <!-- Alerts -->
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+            <div class="chart-panel" style="flex:1;">
+                <div class="chart-header">
+                    <div class="chart-title">Resumen de Merma Proyectada</div>
+                </div>
+                <div style="padding:1rem 1.5rem; display:flex; flex-direction:column; gap:0.875rem;" id="waste-summary"></div>
+            </div>
+            <div class="chart-panel">
+                <div class="chart-header">
+                    <div class="chart-title">Modelo IA · Estado</div>
+                </div>
+                <div style="padding:1rem 1.5rem; display:flex; flex-direction:column; gap:0.625rem;" id="model-status"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ALERTS BAR -->
+    <div class="animate-in delay-5">
+        <div class="alerts-bar">
+            <div class="alerts-label">Alertas Activas</div>
+            <div class="alerts-scroll" id="alerts-scroll"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- DECISION DETAIL MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div>
+                <div class="modal-title" id="modal-title">—</div>
+                <div style="font-size:0.72rem; color:var(--text-3); margin-top:0.25rem;" id="modal-subtitle">—</div>
+            </div>
+            <button class="modal-close-btn" onclick="closeModalDirect()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-metric-row" id="modal-metrics"></div>
+            <div class="modal-section">
+                <div class="modal-section-title">Comparativa de Estrategias</div>
+                <div class="strat-compare" id="modal-strats"></div>
+            </div>
+            <div class="modal-section">
+                <div class="modal-section-title">Clientes Objetivo</div>
+                <div id="modal-customers" style="font-size:0.8rem; color:var(--text-2); line-height:1.7;"></div>
+            </div>
+            <div class="modal-actions">
+                <button class="mbtn primary" id="modal-approve" onclick="approveFromModal()">🚀 Aprobar y Lanzar</button>
+                <button class="mbtn ghost" onclick="closeModalDirect()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════
+const STORES = [
+    {
+        id: 'bsas_centro', name: 'Buenos Aires Centro', shortName: 'CABA',
+        type: 'Urbano Compacto', manager: 'María González', size: '450m²',
+        revenue: 18_450_680, revPrev: 16_890_750,
+        clients: 1890, clientsPrev: 1756,
+        avgBasket: 2450, basketPrev: 2285,
+        perishable: 85, atRisk: 7,
+        health: 'ok',
+        maxRevenue: 42_450_680,
+        waste: { current: 1_240_000, recovered: 890_000 }
+    },
+    {
+        id: 'zona_norte', name: 'San Isidro', shortName: 'ZON',
+        type: 'Hipermercado Familiar', manager: 'Carlos Mendez', size: '1200m²',
+        revenue: 42_450_680, revPrev: 38_890_750,
+        clients: 3245, clientsPrev: 3089,
+        avgBasket: 5250, basketPrev: 4965,
+        perishable: 156, atRisk: 14,
+        health: 'ok',
+        maxRevenue: 42_450_680,
+        waste: { current: 3_100_000, recovered: 2_200_000 }
+    },
+    {
+        id: 'zona_sur', name: 'Quilmes', shortName: 'ZSR',
+        type: 'Barrial', manager: 'Liliana Fernández', size: '680m²',
+        revenue: 22_450_680, revPrev: 21_090_750,
+        clients: 2845, clientsPrev: 2756,
+        avgBasket: 1967, basketPrev: 1845,
+        perishable: 95, atRisk: 9,
+        health: 'warn',
+        maxRevenue: 42_450_680,
+        waste: { current: 1_800_000, recovered: 1_100_000 }
+    },
+    {
+        id: 'cordoba', name: 'Córdoba', shortName: 'CBA',
+        type: 'Universitario', manager: 'Juan P. Morales', size: '580m²',
+        revenue: 15_450_680, revPrev: 14_090_750,
+        clients: 1567, clientsPrev: 1234,
+        avgBasket: 1450, basketPrev: 1325,
+        perishable: 78, atRisk: 6,
+        health: 'ok',
+        maxRevenue: 42_450_680,
+        waste: { current: 980_000, recovered: 720_000 }
+    },
+    {
+        id: 'mendoza', name: 'Mendoza', shortName: 'MDZ',
+        type: 'Turístico-Gastronómico', manager: 'Sofia Ruiz', size: '720m²',
+        revenue: 26_450_680, revPrev: 24_890_750,
+        clients: 1890, clientsPrev: 2156,
+        avgBasket: 3650, basketPrev: 3285,
+        perishable: 134, atRisk: 18,
+        health: 'crit',
+        maxRevenue: 42_450_680,
+        waste: { current: 2_450_000, recovered: 1_650_000 }
+    },
+    {
+        id: 'mar_del_plata', name: 'Mar del Plata', shortName: 'MDP',
+        type: 'Costero Estacional', manager: 'Roberto Alvarez', size: '890m²',
+        revenue: 35_450_680, revPrev: 31_890_750,
+        clients: 4567, clientsPrev: 3890,
+        avgBasket: 2950, basketPrev: 2785,
+        perishable: 167, atRisk: 12,
+        health: 'ok',
+        maxRevenue: 42_450_680,
+        waste: { current: 2_700_000, recovered: 2_050_000 }
+    }
+];
+
+const DECISIONS = [
+    {
+        id: 'd1', priority: 'critical',
+        store: 'Mendoza Centro', storeId: 'mendoza',
+        product: 'Queso Brie · Lácteos', sku: '064',
+        riskValue: 186_400, recoveryValue: 134_200,
+        cocReturn: 124.3,
+        desc: '23 unidades · Vence en 2 días · Probabilidad exceso: 91%',
+        strategy: 'Receta Chef 40%', channel: 'Email + WhatsApp',
+        targets: '756 Turistas Gastronómicos (score 91%) + 312 Locales Premium (score 78%)',
+        strategies: [
+            { name: 'Receta Chef 40%', coc: 124.3, color: '#E31E24' },
+            { name: 'Flash 30%', coc: 89.7, color: '#f59e0b' },
+            { name: '2x1 Especial', coc: 76.4, color: '#10b981' },
+            { name: 'Loyalty 20%', coc: 52.1, color: '#8b5cf6' },
+        ],
+        approved: false
+    },
+    {
+        id: 'd2', priority: 'critical',
+        store: 'San Isidro', storeId: 'zona_norte',
+        product: 'Salmón · Pescados', sku: '041',
+        riskValue: 312_800, recoveryValue: 225_000,
+        cocReturn: 108.7,
+        desc: '41 unidades · Vence en 3 días · Probabilidad exceso: 84%',
+        strategy: 'Flash 30%', channel: 'Push + Email',
+        targets: '1,856 Familias Premium (score 88%) + 487 Compradores Habituales (score 83%)',
+        strategies: [
+            { name: 'Flash 30%', coc: 108.7, color: '#f59e0b' },
+            { name: 'Receta Chef 40%', coc: 95.2, color: '#E31E24' },
+            { name: '2x1 Especial', coc: 72.3, color: '#10b981' },
+            { name: 'Loyalty 20%', coc: 48.9, color: '#8b5cf6' },
+        ],
+        approved: false
+    },
+    {
+        id: 'd3', priority: 'high',
+        store: 'Buenos Aires Centro', storeId: 'bsas_centro',
+        product: 'Palta · Frutas', sku: '004',
+        riskValue: 94_600, recoveryValue: 71_000,
+        cocReturn: 87.4,
+        desc: '67 unidades · Vence en 4 días · Probabilidad exceso: 76%',
+        strategy: 'Receta Chef 40%', channel: 'App + WhatsApp',
+        targets: '856 Ejecutivos en Lunch (score 78%) + 241 Compradores Esporádicos (score 71%)',
+        strategies: [
+            { name: 'Receta Chef 40%', coc: 87.4, color: '#E31E24' },
+            { name: 'Flash 30%', coc: 71.2, color: '#f59e0b' },
+            { name: 'Loyalty 20%', coc: 54.6, color: '#8b5cf6' },
+            { name: 'Flash 10%', coc: 28.3, color: '#4a9eff' },
+        ],
+        approved: false
+    },
+    {
+        id: 'd4', priority: 'high',
+        store: 'Mar del Plata', storeId: 'mar_del_plata',
+        product: 'Langostinos · Pescados', sku: '113',
+        riskValue: 241_200, recoveryValue: 178_400,
+        cocReturn: 94.1,
+        desc: '35 unidades · Vence en 3 días · Probabilidad exceso: 80%',
+        strategy: 'Flash 30%', channel: 'Push + In-store',
+        targets: '2,856 Veraneantes (score 86%) + 487 Familias Marplatenses (score 72%)',
+        strategies: [
+            { name: 'Flash 30%', coc: 94.1, color: '#f59e0b' },
+            { name: '2x1 Especial', coc: 81.3, color: '#10b981' },
+            { name: 'Receta Chef 40%', coc: 76.8, color: '#E31E24' },
+            { name: 'Loyalty 20%', coc: 45.2, color: '#8b5cf6' },
+        ],
+        approved: false
+    },
+    {
+        id: 'd5', priority: 'medium',
+        store: 'Quilmes', storeId: 'zona_sur',
+        product: 'Carne Picada · Carnes', sku: '031',
+        riskValue: 78_400, recoveryValue: 58_200,
+        cocReturn: 68.9,
+        desc: '89 unidades · Vence en 4 días · Probabilidad exceso: 72%',
+        strategy: '2x1 Especial', channel: 'In-store + App',
+        targets: '1,845 Familias Ahorrativas (score 82%) + 241 Clientes Frecuentes (score 69%)',
+        strategies: [
+            { name: '2x1 Especial', coc: 68.9, color: '#10b981' },
+            { name: 'Flash 30%', coc: 61.4, color: '#f59e0b' },
+            { name: 'Loyalty 20%', coc: 43.7, color: '#8b5cf6' },
+            { name: 'Flash 10%', coc: 21.2, color: '#4a9eff' },
+        ],
+        approved: false
+    },
+];
+
+const AI_WINS = [
+    { rank: 1, store: 'San Isidro', product: 'Bife de Chorizo', strategy: 'Receta Chef 40%', coc: 138.2, saved: '$284K' },
+    { rank: 2, store: 'Mar del Plata', product: 'Salmón Fresco', strategy: 'Flash 30%', coc: 121.6, saved: '$196K' },
+    { rank: 3, store: 'Mendoza', product: 'Queso de Cabra', strategy: 'Pack Turístico', coc: 114.3, saved: '$143K' },
+    { rank: 4, store: 'CABA Centro', product: 'Palta Hass', strategy: 'Loyalty 20%', coc: 98.7, saved: '$87K' },
+    { rank: 5, store: 'Córdoba', product: 'Brócoli Premium', strategy: 'Combo Estudiante', coc: 84.2, saved: '$64K' },
+];
+
+const WASTE_TREND = [
+    { week: 'S-4', risk: 14.2, recovered: 8.9 },
+    { week: 'S-3', risk: 12.8, recovered: 9.4 },
+    { week: 'S-2', risk: 16.1, recovered: 12.6 },
+    { week: 'S-1', risk: 13.7, recovered: 11.2 },
+    { week: 'Esta', risk: 12.2, recovered: 8.6 },
+];
+
+let currentModalDecision = null;
+
+// ══════════════════════════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════════════════════════
+function updateClock() {
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    const dateStr = now.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    document.getElementById('header-time').textContent = timeStr;
+    document.getElementById('header-date').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ══════════════════════════════════════════════════════════
+// KPI STRIP
+// ══════════════════════════════════════════════════════════
+function renderKPIStrip() {
+    const totalRev = STORES.reduce((s,st) => s + st.revenue, 0);
+    const totalRevPrev = STORES.reduce((s,st) => s + st.revPrev, 0);
+    const totalClients = STORES.reduce((s,st) => s + st.clients, 0);
+    const totalClientsPrev = STORES.reduce((s,st) => s + st.clientsPrev, 0);
+    const avgBasket = Math.round(STORES.reduce((s,st) => s + st.avgBasket, 0) / STORES.length);
+    const avgBasketPrev = Math.round(STORES.reduce((s,st) => s + st.basketPrev, 0) / STORES.length);
+    const totalAtRisk = STORES.reduce((s,st) => s + st.atRisk, 0);
+    const totalWaste = STORES.reduce((s,st) => s + st.waste.current, 0);
+    const totalRecovered = STORES.reduce((s,st) => s + st.waste.recovered, 0);
+    const recoveryRate = Math.round((totalRecovered / totalWaste) * 100);
+
+    const kpis = [
+        {
+            label: 'Ventas YTD · Red', value: `$${(totalRev/1000000).toFixed(1)}M`,
+            delta: pct(totalRev, totalRevPrev), period: 'vs año anterior',
+            accent: 100, cls: 'primary'
+        },
+        {
+            label: 'Clientes Activos · Red', value: totalClients.toLocaleString('es-AR'),
+            delta: pct(totalClients, totalClientsPrev), period: 'vs semana anterior',
+            accent: 75
+        },
+        {
+            label: 'Ticket Promedio · Red', value: `$${avgBasket.toLocaleString('es-AR')}`,
+            delta: pct(avgBasket, avgBasketPrev), period: 'vs mes anterior',
+            accent: 60
+        },
+        {
+            label: 'SKUs en Riesgo · Red', value: totalAtRisk,
+            delta: null, period: `en ${STORES.length} sucursales`,
+            valCls: 'amber', accent: 0, cls: 'alert'
+        },
+        {
+            label: 'Tasa Recuperación IA', value: `${recoveryRate}%`,
+            delta: { val: '+12pp', up: true }, period: 'vs mes anterior sin IA',
+            valCls: 'green', accent: recoveryRate
+        }
+    ];
+
+    document.getElementById('kpi-strip').innerHTML = kpis.map(k => `
+        <div class="kpi-cell ${k.cls||''}">
+            <div class="kpi-label">${k.label}</div>
+            <div class="kpi-value ${k.valCls||''}">${k.value}</div>
+            <div class="kpi-meta">
+                ${k.delta ? `<span class="delta ${k.delta.up!==false?'up':'down'}">${k.delta.val||k.delta}</span>` : ''}
+                <span class="delta-period">${k.period}</span>
+            </div>
+            <div class="kpi-accent-bar" style="width:${k.accent}%"></div>
+        </div>
+    `).join('');
+}
+
+function pct(curr, prev) {
+    const ch = ((curr - prev) / prev * 100);
+    return { val: `${ch>=0?'▲':'▼'} ${Math.abs(ch).toFixed(1)}%`, up: ch >= 0 };
+}
+
+// ══════════════════════════════════════════════════════════
+// DECISIONS
+// ══════════════════════════════════════════════════════════
+function renderDecisions() {
+    const pending = DECISIONS.filter(d => !d.approved);
+    document.getElementById('decisions-count').textContent = pending.length;
+
+    document.getElementById('decisions-list').innerHTML = DECISIONS.map(d => {
+        const prioClass = d.priority === 'critical' ? 'priority-critical' : d.priority === 'high' ? 'priority-high' : 'priority-medium';
+        return `
+        <div class="decision-row" id="drow-${d.id}" onclick="openDecisionModal('${d.id}')">
+            <div class="decision-priority-bar ${prioClass}"></div>
+            <div class="decision-body">
+                <div class="decision-store">${d.store} · ${d.storeId.toUpperCase()}</div>
+                <div class="decision-product">${d.product}</div>
+                <div class="decision-detail">${d.desc}</div>
+                <div class="decision-tags">
+                    <span class="dtag red">Riesgo: $${(d.riskValue/1000).toFixed(0)}K</span>
+                    <span class="dtag green">Recuperación est.: $${(d.recoveryValue/1000).toFixed(0)}K</span>
+                    <span class="dtag amber">${d.strategy}</span>
+                    <span class="dtag">${d.channel}</span>
+                </div>
+            </div>
+            <div class="decision-action">
+                <div class="decision-recovery-label">RETORNO C/C</div>
+                <div class="decision-recovery">${d.cocReturn.toFixed(1)}%</div>
+                <button class="approve-btn ${d.approved?'approved':''}" id="abtn-${d.id}" onclick="event.stopPropagation(); approveDecision('${d.id}')">${d.approved ? '✓ Aprobado' : '▶ Aprobar'}</button>
+                <button class="preview-btn" onclick="event.stopPropagation(); openDecisionModal('${d.id}')">Ver detalle</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function approveDecision(id) {
+    const d = DECISIONS.find(d => d.id === id);
+    d.approved = true;
+    const btn = document.getElementById(`abtn-${id}`);
+    btn.textContent = '✓ Aprobado';
+    btn.classList.add('approved');
+    const row = document.getElementById(`drow-${id}`);
+    row.style.opacity = '0.55';
+    const pending = DECISIONS.filter(d => !d.approved).length;
+    document.getElementById('decisions-count').textContent = pending;
+    if (currentModalDecision && currentModalDecision.id === id) {
+        document.getElementById('modal-approve').textContent = '✓ Campaña Aprobada';
+        document.getElementById('modal-approve').style.background = '#00d68f';
+    }
+}
+
+function approveAll() {
+    DECISIONS.forEach(d => { if(!d.approved) approveDecision(d.id); });
+}
+
+// ══════════════════════════════════════════════════════════
+// DECISION MODAL
+// ══════════════════════════════════════════════════════════
+function openDecisionModal(id) {
+    const d = DECISIONS.find(d => d.id === id);
+    currentModalDecision = d;
+    document.getElementById('modal-title').textContent = `${d.product}`;
+    document.getElementById('modal-subtitle').textContent = `${d.store} · SKU ${d.sku} · ${d.desc}`;
+
+    document.getElementById('modal-metrics').innerHTML = `
+        <div class="modal-metric">
+            <div class="modal-metric-val" style="color:var(--red);">$${(d.riskValue/1000).toFixed(0)}K</div>
+            <div class="modal-metric-lbl">VALOR EN RIESGO</div>
+        </div>
+        <div class="modal-metric">
+            <div class="modal-metric-val" style="color:var(--green);">$${(d.recoveryValue/1000).toFixed(0)}K</div>
+            <div class="modal-metric-lbl">RECUPERACIÓN ESTIMADA</div>
+        </div>
+        <div class="modal-metric">
+            <div class="modal-metric-val" style="color:var(--green);">${d.cocReturn.toFixed(1)}%</div>
+            <div class="modal-metric-lbl">RETORNO CASH/CASH</div>
+        </div>
+        <div class="modal-metric">
+            <div class="modal-metric-val">${d.strategy}</div>
+            <div class="modal-metric-lbl">ESTRATEGIA ÓPTIMA</div>
+        </div>
+    `;
+
+    const maxCoc = Math.max(...d.strategies.map(s=>s.coc));
+    document.getElementById('modal-strats').innerHTML = d.strategies.map(s => {
+        const w = Math.max(10, (s.coc/maxCoc)*100);
+        const isBest = s.coc === maxCoc;
+        return `
+        <div class="strat-row">
+            <div class="strat-name">${s.name} ${isBest ? '←' : ''}</div>
+            <div class="strat-bar-wrap">
+                <div class="strat-bar-fill" style="width:${w}%; background:${s.color}${isBest?'':80}; opacity:${isBest?1:0.6};">
+                    <span>${s.coc.toFixed(1)}%</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('modal-customers').textContent = d.targets;
+
+    const approveBtn = document.getElementById('modal-approve');
+    if (d.approved) { approveBtn.textContent = '✓ Campaña Aprobada'; approveBtn.style.background = '#00d68f'; }
+    else { approveBtn.textContent = '🚀 Aprobar y Lanzar'; approveBtn.style.background = ''; }
+
+    document.getElementById('modal-overlay').classList.add('open');
+}
+
+function approveFromModal() {
+    if (currentModalDecision) approveDecision(currentModalDecision.id);
+}
+
+function closeModal(e) {
+    if (e.target.id === 'modal-overlay') closeModalDirect();
+}
+function closeModalDirect() {
+    document.getElementById('modal-overlay').classList.remove('open');
+    currentModalDecision = null;
+}
+
+// ══════════════════════════════════════════════════════════
+// NETWORK ROWS
+// ══════════════════════════════════════════════════════════
+function renderNetworkRows() {
+    const maxRev = Math.max(...STORES.map(s=>s.revenue));
+    document.getElementById('network-rows').innerHTML = STORES.map(s => {
+        const barW = Math.round((s.revenue/maxRev)*100);
+        const revDelta = ((s.revenue - s.revPrev)/s.revPrev*100).toFixed(1);
+        const barColor = s.health==='ok' ? '#00d68f' : s.health==='warn' ? '#f59e0b' : '#E31E24';
+        const healthLabel = { ok: '✓ OK', warn: '⚠ Atención', crit: '✕ Crítico' }[s.health];
+        const healthCls = `health-${s.health}`;
+        return `
+        <div class="network-row" onclick="showStoreDetail('${s.id}')">
+            <div class="network-row-top">
+                <div>
+                    <span class="network-store-name">${s.name}</span>
+                    <span class="health-dot" style="background:${barColor};"></span>
+                </div>
+                <div class="network-revenue">$${(s.revenue/1000000).toFixed(1)}M</div>
+            </div>
+            <div class="network-row-bottom">
+                <div class="network-store-type">${s.type}</div>
+                <div class="network-bar-wrap"><div class="network-bar" style="width:${barW}%; background:${barColor};"></div></div>
+                <div class="network-metrics">
+                    <span class="nmval ${revDelta>=0?'good':'danger'}">${revDelta>=0?'▲':'▼'}${Math.abs(revDelta)}%</span>
+                    <span class="nmval danger">${s.atRisk}⚠</span>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// STORE SCORECARDS
+// ══════════════════════════════════════════════════════════
+function renderScorecards() {
+    document.getElementById('store-scorecards').innerHTML = STORES.map(s => {
+        const revDelta = ((s.revenue-s.revPrev)/s.revPrev*100).toFixed(1);
+        const basketDelta = ((s.avgBasket-s.basketPrev)/s.basketPrev*100).toFixed(1);
+        const recoveryRate = Math.round((s.waste.recovered/s.waste.current)*100);
+        const aiOpp = Math.round((s.waste.current - s.waste.recovered) * 0.65 / 1000);
+        const healthLabel = { ok: '✓ Saludable', warn: '⚠ Atención', crit: '✕ Crítico' }[s.health];
+        const healthCls = `health-${s.health}`;
+        return `
+        <div class="scorecard" onclick="showStoreDetail('${s.id}')">
+            <div class="sc-header">
+                <div>
+                    <div class="sc-name">${s.name}</div>
+                    <div class="sc-type">${s.type} · ${s.size}</div>
+                </div>
+                <div class="sc-health ${healthCls}">${healthLabel}</div>
+            </div>
+            <div class="sc-metrics">
+                <div class="sc-m">
+                    <div class="sc-m-val" style="color:${revDelta>=0?'var(--green)':'var(--red)'}; font-size:0.8rem;">${revDelta>=0?'▲':'▼'} ${Math.abs(revDelta)}%</div>
+                    <div class="sc-m-lbl">Ventas YTD</div>
+                </div>
+                <div class="sc-m">
+                    <div class="sc-m-val">$${s.avgBasket.toLocaleString('es-AR')}</div>
+                    <div class="sc-m-lbl">Ticket prom.</div>
+                </div>
+                <div class="sc-m">
+                    <div class="sc-m-val">${s.clients.toLocaleString('es-AR')}</div>
+                    <div class="sc-m-lbl">Clientes</div>
+                </div>
+                <div class="sc-m">
+                    <div class="sc-m-val" style="color:var(--amber);">${s.atRisk}</div>
+                    <div class="sc-m-lbl">SKUs riesgo</div>
+                </div>
+                <div class="sc-m">
+                    <div class="sc-m-val" style="color:var(--green);">${recoveryRate}%</div>
+                    <div class="sc-m-lbl">Rec. IA</div>
+                </div>
+                <div class="sc-m">
+                    <div class="sc-m-val">${s.employees||'—'}</div>
+                    <div class="sc-m-lbl">Empleados</div>
+                </div>
+            </div>
+            <div class="sc-footer">
+                <div class="sc-ai-opp">Oportunidad IA: <strong>$${aiOpp}K</strong> recuperables</div>
+                <div class="sc-manager">${s.manager}</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// WASTE TREND CHART
+// ══════════════════════════════════════════════════════════
+function renderWasteChart() {
+    const maxVal = Math.max(...WASTE_TREND.map(w => Math.max(w.risk, w.recovered)));
+    const chartEl = document.getElementById('waste-chart');
+    const labelsEl = document.getElementById('waste-chart-labels');
+
+    chartEl.innerHTML = WASTE_TREND.map(w => {
+        const riskH = Math.round((w.risk/maxVal)*100);
+        const recH = Math.round((w.recovered/maxVal)*100);
+        return `
+        <div class="bar-group">
+            <div class="bar bar-risk" style="height:${riskH}%;" data-val="$${w.risk}M en riesgo"></div>
+            <div class="bar bar-recovered" style="height:${recH}%;" data-val="$${w.recovered}M recuperado"></div>
+        </div>`;
+    }).join('');
+
+    labelsEl.innerHTML = WASTE_TREND.map(w=>`<div class="bar-label">${w.week}</div>`).join('');
+
+    const totalRisk = WASTE_TREND.reduce((s,w)=>s+w.risk,0);
+    const totalRec = WASTE_TREND.reduce((s,w)=>s+w.recovered,0);
+    const avgRec = Math.round((totalRec/totalRisk)*100);
+    document.getElementById('waste-chart-footer').innerHTML = `
+        <div class="chart-stat">
+            <div class="chart-stat-val" style="color:var(--red);">$${totalRisk.toFixed(1)}M</div>
+            <div class="chart-stat-lbl">TOTAL EN RIESGO (4 SEM)</div>
+        </div>
+        <div class="chart-stat">
+            <div class="chart-stat-val" style="color:var(--green);">$${totalRec.toFixed(1)}M</div>
+            <div class="chart-stat-lbl">RECUPERADO POR IA (${avgRec}%)</div>
+        </div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// AI WINS
+// ══════════════════════════════════════════════════════════
+function renderWins() {
+    document.getElementById('wins-list').innerHTML = AI_WINS.map(w => `
+        <div class="win-row">
+            <div class="win-rank">#${w.rank}</div>
+            <div class="win-body">
+                <div class="win-name">${w.product}</div>
+                <div class="win-detail">${w.store} · ${w.strategy}</div>
+            </div>
+            <div class="win-metric">
+                <div class="win-coc">${w.coc.toFixed(1)}%</div>
+                <div class="win-coc-lbl">${w.saved}</div>
+            </div>
+        </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// WASTE SUMMARY & MODEL STATUS
+// ══════════════════════════════════════════════════════════
+function renderWasteSummary() {
+    const totalWaste = STORES.reduce((s,st)=>s+st.waste.current,0);
+    const totalRec = STORES.reduce((s,st)=>s+st.waste.recovered,0);
+    const netExposure = totalWaste - totalRec;
+    const aiCapture = Math.round((totalRec/totalWaste)*100);
+
+    document.getElementById('waste-summary').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.72rem; color:var(--text-3);">Exposición bruta (mes)</div>
+            <div style="font-family:var(--mono); color:var(--red);">$${(totalWaste/1000000).toFixed(2)}M</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:0.72rem; color:var(--text-3);">Recuperado por IA</div>
+            <div style="font-family:var(--mono); color:var(--green);">$${(totalRec/1000000).toFixed(2)}M</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.5rem; border-top:1px solid var(--border);">
+            <div style="font-size:0.72rem; color:var(--text-2); font-weight:600;">Exposición neta</div>
+            <div style="font-family:var(--mono); font-size:1.1rem; color:var(--amber);">$${(netExposure/1000000).toFixed(2)}M</div>
+        </div>
+        <div style="margin-top:0.5rem;">
+            <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-3); margin-bottom:0.375rem;">
+                <span>Tasa de captura IA</span><span style="color:var(--green); font-family:var(--mono);">${aiCapture}%</span>
+            </div>
+            <div style="background:var(--bg-4); border-radius:2px; height:8px; overflow:hidden;">
+                <div style="height:100%; width:${aiCapture}%; background:var(--green); border-radius:2px;"></div>
+            </div>
+        </div>`;
+
+    document.getElementById('model-status').innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+            <span style="color:var(--text-3);">XGBoost Overstock Model</span>
+            <span style="font-family:var(--mono); color:var(--green); font-size:0.68rem;">RMSE 0.073 · AUC 0.89</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+            <span style="color:var(--text-3);">Customer Propensity Model</span>
+            <span style="font-family:var(--mono); color:var(--green); font-size:0.68rem;">Precision 0.84 · F1 0.81</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+            <span style="color:var(--text-3);">Monte Carlo Simulation</span>
+            <span style="font-family:var(--mono); color:var(--green); font-size:0.68rem;">10K iter · IC 95%</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
+            <span style="color:var(--text-3);">Último reentrenamiento</span>
+            <span style="font-family:var(--mono); color:var(--text-2); font-size:0.68rem;">Hoy 04:30 AM</span>
+        </div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// ALERTS
+// ══════════════════════════════════════════════════════════
+function renderAlerts() {
+    const alerts = [
+        { type: 'crit', text: '⚡ Mendoza: 4 SKUs vencen mañana · $186K en riesgo' },
+        { type: 'crit', text: '⚡ San Isidro: Salmón 41 unidades · 3 días' },
+        { type: 'warn', text: '⚠ Mendoza: Clientes locales con tendencia ↓ −12.8%' },
+        { type: 'warn', text: '⚠ Quilmes: Frecuencia de visita cayó 2.4→2.2x' },
+        { type: 'info', text: '📊 Modelo reentrenado con 847K registros nuevos' },
+        { type: 'info', text: '🏆 Campaña Mar del Plata: 61% conversión · $178K recuperados' },
+        { type: 'info', text: '📅 Partido Boca-River el 12/09 · Ajustar stock Carnes+Bebidas' },
+        { type: 'warn', text: '⚠ Córdoba: Período de exámenes · Demanda energizantes +40%' },
+    ];
+    document.getElementById('alerts-scroll').innerHTML = alerts.map(a=>`
+        <div class="alert-chip ${a.type}" onclick="handleAlert('${a.type}')">${a.text}</div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════
+// UTILITIES
+// ══════════════════════════════════════════════════════════
+function showStoreDetail(storeId) {
+    const store = STORES.find(s=>s.id===storeId);
+    // In a real system this would navigate to the ops dashboard filtered to this store
+    console.log('Navigating to store detail:', storeId);
+}
+
+function handleAlert(type) { /* In production: navigate to relevant section */ }
+
+function exportDashboard() {
+    alert('Informe ejecutivo PDF generado: DIA_Panel_Ejecutivo_' + new Date().toLocaleDateString('es-AR').replace(/\//g,'-') + '.pdf');
+}
+
+// ══════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════
+function init() {
+    renderKPIStrip();
+    renderDecisions();
+    renderNetworkRows();
+    renderScorecards();
+    renderWasteChart();
+    renderWins();
+    renderWasteSummary();
+    renderAlerts();
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
