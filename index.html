@@ -44,7 +44,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Subtle grain overlay */
 body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -52,7 +51,6 @@ body::before {
     opacity: 0.4;
 }
 
-/* ── HEADER ── */
 .header {
     position: sticky; top: 0; z-index: 200;
     background: rgba(13,13,15,0.92);
@@ -88,8 +86,21 @@ body::before {
 }
 @keyframes livePulse { 0%,100%{ opacity:1; box-shadow:0 0 8px var(--green); } 50%{ opacity:0.5; box-shadow:0 0 3px var(--green); } }
 
-.header-right { display: flex; align-items: center; gap: 1.5rem; }
+.header-right { display: flex; align-items: center; gap: 1rem; }
 .header-time { font-family: var(--mono); font-size: 0.8rem; color: var(--text-2); }
+
+/* Language toggle */
+.lang-toggle {
+    display: flex; gap: 2px;
+    background: var(--bg-4); border-radius: 6px; padding: 2px;
+}
+.lang-btn {
+    padding: 0.25rem 0.625rem; border-radius: 4px;
+    font-size: 0.68rem; font-family: var(--mono); font-weight: 600;
+    cursor: pointer; border: none; background: transparent;
+    color: var(--text-3); transition: all 0.15s; letter-spacing: 0.5px;
+}
+.lang-btn.active { background: var(--bg-2); color: var(--text); }
 
 .header-actions { display: flex; gap: 0.5rem; }
 .hbtn {
@@ -105,7 +116,6 @@ body::before {
 }
 .hbtn.primary:hover { box-shadow: 0 4px 20px var(--red-glow); }
 
-/* ── LAYOUT ── */
 .main {
     position: relative; z-index: 1;
     padding: 1.75rem 2rem;
@@ -113,7 +123,6 @@ body::before {
     display: flex; flex-direction: column; gap: 1.5rem;
 }
 
-/* Section label */
 .section-label {
     font-size: 0.65rem; font-weight: 600; letter-spacing: 2.5px;
     text-transform: uppercase; color: var(--text-3);
@@ -122,7 +131,6 @@ body::before {
 }
 .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-/* ── NETWORK KPI STRIP ── */
 .kpi-strip {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -168,7 +176,6 @@ body::before {
     transition: width 1.2s ease;
 }
 
-/* ── DECISIONS PANEL ── */
 .decisions-wrapper {
     display: grid;
     grid-template-columns: 1fr 340px;
@@ -221,7 +228,6 @@ body::before {
 }
 .decision-product { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.375rem; }
 .decision-detail { font-family: var(--mono); font-size: 0.75rem; color: var(--text-2); }
-.decision-detail span { color: var(--text); }
 .decision-tags { margin-top: 0.5rem; display: flex; gap: 0.375rem; flex-wrap: wrap; }
 .dtag {
     font-size: 0.65rem; font-family: var(--mono);
@@ -253,9 +259,8 @@ body::before {
     font-family: var(--display); font-size: 0.7rem;
     cursor: pointer; transition: all 0.15s;
 }
-.preview-btn:hover { color: var(--text); border-color: var(--border-2); }
+.preview-btn:hover { color: var(--text); }
 
-/* ── NETWORK OVERVIEW PANEL ── */
 .network-panel {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -278,11 +283,11 @@ body::before {
     margin-bottom: 0.375rem;
 }
 .network-store-name { font-size: 0.8rem; font-weight: 700; }
-.network-revenue { font-family: var(--mono); font-size: 0.875rem; font-weight: 500; color: var(--text); }
+.network-revenue { font-family: var(--mono); font-size: 0.875rem; font-weight: 500; }
 .network-row-bottom {
     display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;
 }
-.network-store-type { font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.3px; }
+.network-store-type { font-size: 0.65rem; color: var(--text-3); }
 .network-bar-wrap { flex: 1; height: 4px; background: var(--bg-4); border-radius: 2px; overflow: hidden; }
 .network-bar { height: 100%; border-radius: 2px; transition: width 1s ease; }
 .network-metrics { display: flex; gap: 0.75rem; }
@@ -291,14 +296,12 @@ body::before {
 .nmval.good { color: var(--green); }
 .health-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; display: inline-block; margin-left: 0.375rem; }
 
-/* ── BOTTOM ROW ── */
 .bottom-row {
     display: grid;
     grid-template-columns: 1fr 1fr 400px;
     gap: 1rem;
 }
 
-/* ── WASTE TREND CHART ── */
 .chart-panel {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -343,11 +346,9 @@ body::before {
     display: grid; grid-template-columns: 1fr 1fr;
     gap: 1rem;
 }
-.chart-stat { }
 .chart-stat-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 500; }
 .chart-stat-lbl { font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.5px; margin-top: 0.15rem; }
 
-/* ── AI WINS PANEL ── */
 .wins-panel {
     background: var(--bg-2);
     border: 1px solid var(--border);
@@ -375,7 +376,6 @@ body::before {
 .win-coc { font-family: var(--mono); font-size: 1rem; font-weight: 600; color: var(--green); }
 .win-coc-lbl { font-size: 0.62rem; color: var(--text-3); }
 
-/* ── STORE DETAIL CARD ── */
 .store-scorecards {
     display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
     background: var(--border); border-radius: 12px; overflow: hidden;
@@ -398,7 +398,6 @@ body::before {
 .health-crit { background: var(--red-dim); color: var(--red); }
 
 .sc-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-.sc-m { }
 .sc-m-val { font-family: var(--mono); font-size: 0.9rem; font-weight: 500; }
 .sc-m-lbl { font-size: 0.62rem; color: var(--text-3); margin-top: 0.1rem; }
 
@@ -407,13 +406,11 @@ body::before {
 .sc-ai-opp strong { color: var(--green); font-family: var(--mono); }
 .sc-manager { font-size: 0.65rem; color: var(--text-3); }
 
-/* ── ALERTS BAR ── */
 .alerts-bar {
     background: var(--bg-2);
     border: 1px solid var(--border);
     border-radius: 12px; padding: 0.875rem 1.5rem;
     display: flex; align-items: center; gap: 1.5rem;
-    overflow-x: auto;
 }
 .alerts-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3); flex-shrink: 0; }
 .alerts-scroll { display: flex; gap: 1rem; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
@@ -429,7 +426,6 @@ body::before {
 .alert-chip.info { background: var(--blue-dim); border-color: rgba(74,158,255,0.2); color: var(--blue); }
 .alert-chip:hover { transform: translateY(-1px); }
 
-/* ── MODAL ── */
 .modal-overlay {
     position: fixed; inset: 0; z-index: 500;
     background: rgba(0,0,0,0.75); backdrop-filter: blur(8px);
@@ -467,10 +463,9 @@ body::before {
 .strat-compare { display: flex; flex-direction: column; gap: 0.5rem; }
 .strat-row { display: flex; align-items: center; gap: 0.75rem; }
 .strat-name { font-size: 0.78rem; width: 140px; flex-shrink: 0; }
-.strat-bar-wrap { flex: 1; background: var(--bg-4); border-radius: 2px; height: 20px; overflow: hidden; position: relative; }
+.strat-bar-wrap { flex: 1; background: var(--bg-4); border-radius: 2px; height: 20px; overflow: hidden; }
 .strat-bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 0.5rem; }
 .strat-bar-fill span { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: white; }
-.strat-badge { font-family: var(--mono); font-size: 0.68rem; width: 50px; text-align: right; }
 .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
 .mbtn { flex: 1; padding: 0.75rem; border-radius: 8px; font-family: var(--display); font-size: 0.8rem; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
 .mbtn.primary { background: var(--red); color: white; }
@@ -478,18 +473,14 @@ body::before {
 .mbtn.ghost { background: var(--bg-4); color: var(--text-2); border: 1px solid var(--border-2); }
 .mbtn.ghost:hover { color: var(--text); }
 
-/* Entry animation */
 .animate-in { animation: fadeSlideIn 0.4s ease-out both; }
 @keyframes fadeSlideIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-
 .delay-1 { animation-delay: 0.05s; }
 .delay-2 { animation-delay: 0.1s; }
 .delay-3 { animation-delay: 0.15s; }
 .delay-4 { animation-delay: 0.2s; }
 .delay-5 { animation-delay: 0.25s; }
-.delay-6 { animation-delay: 0.3s; }
 
-/* Scrollbar */
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--bg-4); border-radius: 2px; }
@@ -497,77 +488,72 @@ body::before {
 </head>
 <body>
 
-<!-- ── HEADER ── -->
 <header class="header">
     <div class="header-left">
         <div class="logo-block">
             <div class="logo-mark">DIA</div>
             <div>
-                <div class="logo-text">Panel Ejecutivo</div>
-                <div class="logo-role">Presidencia · Red Argentina</div>
+                <div class="logo-text" data-es="Panel Ejecutivo" data-en="Executive Dashboard">Panel Ejecutivo</div>
+                <div class="logo-role" data-es="Presidencia · Red Argentina" data-en="Presidency · Argentine Network">Presidencia · Red Argentina</div>
             </div>
         </div>
         <div class="header-divider"></div>
         <div class="live-indicator">
             <div class="live-dot"></div>
-            <span>EN VIVO · ACTUALIZADO</span>
+            <span data-es="EN VIVO · ACTUALIZADO" data-en="LIVE · UPDATED">EN VIVO · ACTUALIZADO</span>
             <span id="header-time" style="color:var(--text);">—</span>
         </div>
     </div>
     <div class="header-right">
         <div class="header-time" id="header-date">—</div>
+        <div class="lang-toggle">
+            <button class="lang-btn active" id="btn-es" onclick="setLang('es')">ES</button>
+            <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+        </div>
         <div class="header-actions">
-            <button class="hbtn" onclick="exportDashboard()">↓ Exportar</button>
-            <button class="hbtn" onclick="window.location.href='dia-enhanced.html'">⬡ Ops</button>
-            <button class="hbtn primary" onclick="approveAll()">✓ Aprobar Todo</button>
+            <button class="hbtn" onclick="exportDashboard()" data-es="↓ Exportar" data-en="↓ Export">↓ Exportar</button>
+            <button class="hbtn" onclick="window.location.href='dia-enhanced.html'" data-es="⬡ Ops" data-en="⬡ Ops">⬡ Ops</button>
+            <button class="hbtn primary" onclick="approveAll()" data-es="✓ Aprobar Todo" data-en="✓ Approve All">✓ Aprobar Todo</button>
         </div>
     </div>
 </header>
 
-<!-- ── MAIN ── -->
 <div class="main">
 
-    <!-- 1. NETWORK KPI STRIP -->
     <div class="animate-in delay-1">
-        <div class="section-label">Red Nacional · 6 Sucursales · KPIs Consolidados</div>
+        <div class="section-label" id="lbl-kpi" data-es="Red Nacional · 6 Sucursales · KPIs Consolidados" data-en="National Network · 6 Branches · Consolidated KPIs">Red Nacional · 6 Sucursales · KPIs Consolidados</div>
         <div class="kpi-strip" id="kpi-strip"></div>
     </div>
 
-    <!-- 2. DECISIONS + NETWORK -->
     <div class="decisions-wrapper animate-in delay-2">
-        <!-- Decisions Panel -->
         <div class="decisions-panel">
             <div class="decisions-header">
                 <div class="decisions-title">
-                    Decisiones Pendientes de Aprobación
+                    <span data-es="Decisiones Pendientes de Aprobación" data-en="Decisions Pending Approval">Decisiones Pendientes de Aprobación</span>
                     <span class="decisions-badge" id="decisions-count">—</span>
                 </div>
-                <div class="decisions-meta">Generadas por Motor IA · Ordenadas por impacto</div>
+                <div class="decisions-meta" data-es="Generadas por Motor IA · Ordenadas por impacto" data-en="Generated by AI Engine · Ranked by impact">Generadas por Motor IA · Ordenadas por impacto</div>
             </div>
             <div id="decisions-list"></div>
         </div>
-        <!-- Network Overview -->
         <div class="network-panel">
-            <div class="network-header">Desempeño por Sucursal</div>
+            <div class="network-header" data-es="Desempeño por Sucursal" data-en="Performance by Branch">Desempeño por Sucursal</div>
             <div id="network-rows"></div>
         </div>
     </div>
 
-    <!-- 3. STORE SCORECARDS -->
     <div class="animate-in delay-3">
-        <div class="section-label">Tarjetas de Sucursal · Click para detalle</div>
+        <div class="section-label" id="lbl-scorecards" data-es="Tarjetas de Sucursal · Click para detalle" data-en="Branch Cards · Click for detail">Tarjetas de Sucursal · Click para detalle</div>
         <div class="store-scorecards" id="store-scorecards"></div>
     </div>
 
-    <!-- 4. BOTTOM ROW -->
     <div class="bottom-row animate-in delay-4">
-        <!-- Waste Trend -->
         <div class="chart-panel">
             <div class="chart-header">
-                <div class="chart-title">Valor en Riesgo vs. Recuperado por IA</div>
+                <div class="chart-title" data-es="Valor en Riesgo vs. Recuperado por IA" data-en="Value at Risk vs. Recovered by AI">Valor en Riesgo vs. Recuperado por IA</div>
                 <div class="chart-legend">
-                    <div class="legend-item"><div class="legend-dot" style="background:rgba(227,30,36,0.5);"></div>En Riesgo</div>
-                    <div class="legend-item"><div class="legend-dot" style="background:rgba(0,214,143,0.5);"></div>Recuperado</div>
+                    <div class="legend-item"><div class="legend-dot" style="background:rgba(227,30,36,0.5);"></div><span data-es="En Riesgo" data-en="At Risk">En Riesgo</span></div>
+                    <div class="legend-item"><div class="legend-dot" style="background:rgba(0,214,143,0.5);"></div><span data-es="Recuperado" data-en="Recovered">Recuperado</span></div>
                 </div>
             </div>
             <div class="bar-chart-wrap">
@@ -577,43 +563,39 @@ body::before {
             <div class="chart-footer" id="waste-chart-footer"></div>
         </div>
 
-        <!-- AI Wins -->
         <div class="wins-panel">
             <div class="wins-header">
-                <div class="wins-title">🏆 Top Resultados IA del Mes</div>
-                <div class="wins-period">Retorno Cash/Cash</div>
+                <div class="wins-title" data-es="🏆 Top Resultados IA del Mes" data-en="🏆 Top AI Results of the Month">🏆 Top Resultados IA del Mes</div>
+                <div class="wins-period" data-es="Retorno Cash/Cash" data-en="Cash-on-Cash Return">Retorno Cash/Cash</div>
             </div>
             <div id="wins-list"></div>
         </div>
 
-        <!-- Alerts -->
         <div style="display:flex; flex-direction:column; gap:1rem;">
             <div class="chart-panel" style="flex:1;">
                 <div class="chart-header">
-                    <div class="chart-title">Resumen de Merma Proyectada</div>
+                    <div class="chart-title" data-es="Resumen de Merma Proyectada" data-en="Projected Waste Summary">Resumen de Merma Proyectada</div>
                 </div>
                 <div style="padding:1rem 1.5rem; display:flex; flex-direction:column; gap:0.875rem;" id="waste-summary"></div>
             </div>
             <div class="chart-panel">
                 <div class="chart-header">
-                    <div class="chart-title">Modelo IA · Estado</div>
+                    <div class="chart-title" data-es="Modelo IA · Estado" data-en="AI Model · Status">Modelo IA · Estado</div>
                 </div>
                 <div style="padding:1rem 1.5rem; display:flex; flex-direction:column; gap:0.625rem;" id="model-status"></div>
             </div>
         </div>
     </div>
 
-    <!-- 5. ALERTS BAR -->
     <div class="animate-in delay-5">
         <div class="alerts-bar">
-            <div class="alerts-label">Alertas Activas</div>
+            <div class="alerts-label" data-es="Alertas Activas" data-en="Active Alerts">Alertas Activas</div>
             <div class="alerts-scroll" id="alerts-scroll"></div>
         </div>
     </div>
 
 </div>
 
-<!-- DECISION DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
     <div class="modal" id="modal">
         <div class="modal-header">
@@ -626,16 +608,16 @@ body::before {
         <div class="modal-body">
             <div class="modal-metric-row" id="modal-metrics"></div>
             <div class="modal-section">
-                <div class="modal-section-title">Comparativa de Estrategias</div>
+                <div class="modal-section-title" data-es="Comparativa de Estrategias" data-en="Strategy Comparison">Comparativa de Estrategias</div>
                 <div class="strat-compare" id="modal-strats"></div>
             </div>
             <div class="modal-section">
-                <div class="modal-section-title">Clientes Objetivo</div>
+                <div class="modal-section-title" data-es="Clientes Objetivo" data-en="Target Customers">Clientes Objetivo</div>
                 <div id="modal-customers" style="font-size:0.8rem; color:var(--text-2); line-height:1.7;"></div>
             </div>
             <div class="modal-actions">
-                <button class="mbtn primary" id="modal-approve" onclick="approveFromModal()">🚀 Aprobar y Lanzar</button>
-                <button class="mbtn ghost" onclick="closeModalDirect()">Cancelar</button>
+                <button class="mbtn primary" id="modal-approve" onclick="approveFromModal()">🚀 <span data-es="Aprobar y Lanzar" data-en="Approve and Launch">Aprobar y Lanzar</span></button>
+                <button class="mbtn ghost" onclick="closeModalDirect()" data-es="Cancelar" data-en="Cancel">Cancelar</button>
             </div>
         </div>
     </div>
@@ -643,73 +625,222 @@ body::before {
 
 <script>
 // ══════════════════════════════════════════════════════════
+// LANGUAGE SYSTEM
+// ══════════════════════════════════════════════════════════
+let currentLang = 'es';
+
+const T = {
+    es: {
+        // KPI labels
+        kpi_sales: 'Ventas YTD · Red',
+        kpi_clients: 'Clientes Activos · Red',
+        kpi_basket: 'Ticket Promedio · Red',
+        kpi_risk: 'SKUs en Riesgo · Red',
+        kpi_recovery: 'Tasa Recuperación IA',
+        period_prev_year: 'vs año anterior',
+        period_prev_week: 'vs semana anterior',
+        period_prev_month: 'vs mes anterior',
+        period_branches: 'en {n} sucursales',
+        period_no_ai: 'vs mes anterior sin IA',
+        // Decision tags
+        risk_tag: 'Riesgo: ${v}K',
+        recovery_tag: 'Recuperación est.: ${v}K',
+        coc_return: 'RETORNO C/C',
+        approve: '▶ Aprobar',
+        approved: '✓ Aprobado',
+        see_detail: 'Ver detalle',
+        // Network
+        health_ok: '✓ OK', health_warn: '⚠ Atención', health_crit: '✕ Crítico',
+        // Scorecards
+        health_s_ok: '✓ Saludable', health_s_warn: '⚠ Atención', health_s_crit: '✕ Crítico',
+        sales_ytd: 'Ventas YTD', avg_ticket: 'Ticket prom.',
+        clients: 'Clientes', risk_skus: 'SKUs riesgo',
+        ai_rec: 'Rec. IA', employees: 'Empleados',
+        ai_opp: 'Oportunidad IA',
+        recoverable: 'recuperables',
+        // Chart
+        chart_risk_label: '${v}M en riesgo',
+        chart_rec_label: '${v}M recuperado',
+        chart_total_risk: 'TOTAL EN RIESGO (4 SEM)',
+        chart_recovered: 'RECUPERADO POR IA (${pct}%)',
+        // Waste summary
+        gross_exposure: 'Exposición bruta (mes)',
+        recovered_ai: 'Recuperado por IA',
+        net_exposure: 'Exposición neta',
+        ai_capture: 'Tasa de captura IA',
+        // Model status
+        last_retrain: 'Último reentrenamiento',
+        today: 'Hoy',
+        // Alerts
+        alerts: [
+            '⚡ Mendoza: 4 SKUs vencen mañana · $186K en riesgo',
+            '⚡ San Isidro: Salmón 41 unidades · 3 días',
+            '⚠ Mendoza: Clientes locales con tendencia ↓ −12.8%',
+            '⚠ Quilmes: Frecuencia de visita cayó 2.4→2.2x',
+            '📊 Modelo reentrenado con 847K registros nuevos',
+            '🏆 Campaña Mar del Plata: 61% conversión · $178K recuperados',
+            '📅 Partido Boca-River el 12/09 · Ajustar stock Carnes+Bebidas',
+            '⚠ Córdoba: Período de exámenes · Demanda energizantes +40%',
+        ],
+        // Modal
+        value_at_risk: 'VALOR EN RIESGO',
+        est_recovery: 'RECUPERACIÓN ESTIMADA',
+        coc_return_lbl: 'RETORNO CASH/CASH',
+        optimal_strategy: 'ESTRATEGIA ÓPTIMA',
+        campaign_approved: '✓ Campaña Aprobada',
+        approve_launch: '🚀 Aprobar y Lanzar',
+        // Export
+        export_msg: 'Informe ejecutivo PDF generado: DIA_Panel_Ejecutivo_',
+    },
+    en: {
+        kpi_sales: 'YTD Sales · Network',
+        kpi_clients: 'Active Clients · Network',
+        kpi_basket: 'Avg. Basket · Network',
+        kpi_risk: 'SKUs at Risk · Network',
+        kpi_recovery: 'AI Recovery Rate',
+        period_prev_year: 'vs prior year',
+        period_prev_week: 'vs prior week',
+        period_prev_month: 'vs prior month',
+        period_branches: 'across {n} branches',
+        period_no_ai: 'vs prior month without AI',
+        risk_tag: 'Risk: ${v}K',
+        recovery_tag: 'Est. Recovery: ${v}K',
+        coc_return: 'C/C RETURN',
+        approve: '▶ Approve',
+        approved: '✓ Approved',
+        see_detail: 'View detail',
+        health_ok: '✓ OK', health_warn: '⚠ Attention', health_crit: '✕ Critical',
+        health_s_ok: '✓ Healthy', health_s_warn: '⚠ Attention', health_s_crit: '✕ Critical',
+        sales_ytd: 'YTD Sales', avg_ticket: 'Avg. basket',
+        clients: 'Clients', risk_skus: 'SKUs at risk',
+        ai_rec: 'AI Rec.', employees: 'Employees',
+        ai_opp: 'AI Opportunity',
+        recoverable: 'recoverable',
+        chart_risk_label: '${v}M at risk',
+        chart_rec_label: '${v}M recovered',
+        chart_total_risk: 'TOTAL AT RISK (4 WKS)',
+        chart_recovered: 'RECOVERED BY AI (${pct}%)',
+        gross_exposure: 'Gross exposure (month)',
+        recovered_ai: 'Recovered by AI',
+        net_exposure: 'Net exposure',
+        ai_capture: 'AI capture rate',
+        last_retrain: 'Last retraining',
+        today: 'Today',
+        alerts: [
+            '⚡ Mendoza: 4 SKUs expire tomorrow · $186K at risk',
+            '⚡ San Isidro: Salmon 41 units · 3 days',
+            '⚠ Mendoza: Local clients trending ↓ −12.8%',
+            '⚠ Quilmes: Visit frequency dropped 2.4→2.2x',
+            '📊 Model retrained with 847K new records',
+            '🏆 Mar del Plata campaign: 61% conversion · $178K recovered',
+            '📅 Boca-River match 12/09 · Adjust Meat+Beverage stock',
+            '⚠ Córdoba: Exam period · Energy drink demand +40%',
+        ],
+        value_at_risk: 'VALUE AT RISK',
+        est_recovery: 'ESTIMATED RECOVERY',
+        coc_return_lbl: 'CASH/CASH RETURN',
+        optimal_strategy: 'OPTIMAL STRATEGY',
+        campaign_approved: '✓ Campaign Approved',
+        approve_launch: '🚀 Approve and Launch',
+        export_msg: 'Executive PDF report generated: DIA_Executive_Dashboard_',
+    }
+};
+
+function t(key, vars) {
+    let str = T[currentLang][key] || T['es'][key] || key;
+    if (vars) Object.entries(vars).forEach(([k,v]) => { str = str.replace(`{${k}}`, v); });
+    return str;
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.documentElement.lang = lang === 'es' ? 'es-AR' : 'en';
+    // Update all static data-es/data-en elements
+    document.querySelectorAll('[data-es]').forEach(el => {
+        el.textContent = lang === 'es' ? el.dataset.es : el.dataset.en;
+    });
+    // Re-render all dynamic sections
+    renderKPIStrip();
+    renderDecisions();
+    renderNetworkRows();
+    renderScorecards();
+    renderWasteChart();
+    renderWins();
+    renderWasteSummary();
+    renderAlerts();
+    updateClock();
+}
+
+// ══════════════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════════════
 const STORES = [
     {
         id: 'bsas_centro', name: 'Buenos Aires Centro', shortName: 'CABA',
-        type: 'Urbano Compacto', manager: 'María González', size: '450m²',
+        type_es: 'Urbano Compacto', type_en: 'Compact Urban',
+        manager: 'María González', size: '450m²',
         revenue: 18_450_680, revPrev: 16_890_750,
         clients: 1890, clientsPrev: 1756,
         avgBasket: 2450, basketPrev: 2285,
         perishable: 85, atRisk: 7,
         health: 'ok',
-        maxRevenue: 42_450_680,
         waste: { current: 1_240_000, recovered: 890_000 }
     },
     {
         id: 'zona_norte', name: 'San Isidro', shortName: 'ZON',
-        type: 'Hipermercado Familiar', manager: 'Carlos Mendez', size: '1200m²',
+        type_es: 'Hipermercado Familiar', type_en: 'Family Hypermarket',
+        manager: 'Carlos Mendez', size: '1200m²',
         revenue: 42_450_680, revPrev: 38_890_750,
         clients: 3245, clientsPrev: 3089,
         avgBasket: 5250, basketPrev: 4965,
         perishable: 156, atRisk: 14,
         health: 'ok',
-        maxRevenue: 42_450_680,
         waste: { current: 3_100_000, recovered: 2_200_000 }
     },
     {
         id: 'zona_sur', name: 'Quilmes', shortName: 'ZSR',
-        type: 'Barrial', manager: 'Liliana Fernández', size: '680m²',
+        type_es: 'Barrial', type_en: 'Neighborhood',
+        manager: 'Liliana Fernández', size: '680m²',
         revenue: 22_450_680, revPrev: 21_090_750,
         clients: 2845, clientsPrev: 2756,
         avgBasket: 1967, basketPrev: 1845,
         perishable: 95, atRisk: 9,
         health: 'warn',
-        maxRevenue: 42_450_680,
         waste: { current: 1_800_000, recovered: 1_100_000 }
     },
     {
         id: 'cordoba', name: 'Córdoba', shortName: 'CBA',
-        type: 'Universitario', manager: 'Juan P. Morales', size: '580m²',
+        type_es: 'Universitario', type_en: 'University District',
+        manager: 'Juan P. Morales', size: '580m²',
         revenue: 15_450_680, revPrev: 14_090_750,
         clients: 1567, clientsPrev: 1234,
         avgBasket: 1450, basketPrev: 1325,
         perishable: 78, atRisk: 6,
         health: 'ok',
-        maxRevenue: 42_450_680,
         waste: { current: 980_000, recovered: 720_000 }
     },
     {
         id: 'mendoza', name: 'Mendoza', shortName: 'MDZ',
-        type: 'Turístico-Gastronómico', manager: 'Sofia Ruiz', size: '720m²',
+        type_es: 'Turístico-Gastronómico', type_en: 'Tourism-Gastronomic',
+        manager: 'Sofia Ruiz', size: '720m²',
         revenue: 26_450_680, revPrev: 24_890_750,
         clients: 1890, clientsPrev: 2156,
         avgBasket: 3650, basketPrev: 3285,
         perishable: 134, atRisk: 18,
         health: 'crit',
-        maxRevenue: 42_450_680,
         waste: { current: 2_450_000, recovered: 1_650_000 }
     },
     {
         id: 'mar_del_plata', name: 'Mar del Plata', shortName: 'MDP',
-        type: 'Costero Estacional', manager: 'Roberto Alvarez', size: '890m²',
+        type_es: 'Costero Estacional', type_en: 'Coastal Seasonal',
+        manager: 'Roberto Alvarez', size: '890m²',
         revenue: 35_450_680, revPrev: 31_890_750,
         clients: 4567, clientsPrev: 3890,
         avgBasket: 2950, basketPrev: 2785,
         perishable: 167, atRisk: 12,
         health: 'ok',
-        maxRevenue: 42_450_680,
         waste: { current: 2_700_000, recovered: 2_050_000 }
     }
 ];
@@ -718,104 +849,124 @@ const DECISIONS = [
     {
         id: 'd1', priority: 'critical',
         store: 'Mendoza Centro', storeId: 'mendoza',
-        product: 'Queso Brie · Lácteos', sku: '064',
+        product_es: 'Queso Brie · Lácteos', product_en: 'Brie Cheese · Dairy',
+        sku: '064',
         riskValue: 186_400, recoveryValue: 134_200,
         cocReturn: 124.3,
-        desc: '23 unidades · Vence en 2 días · Probabilidad exceso: 91%',
-        strategy: 'Receta Chef 40%', channel: 'Email + WhatsApp',
-        targets: '756 Turistas Gastronómicos (score 91%) + 312 Locales Premium (score 78%)',
+        desc_es: '23 unidades · Vence en 2 días · Probabilidad exceso: 91%',
+        desc_en: '23 units · Expires in 2 days · Overstock probability: 91%',
+        strategy_es: 'Receta Chef 40%', strategy_en: 'Chef Recipe 40%',
+        channel: 'Email + WhatsApp',
+        targets_es: '756 Turistas Gastronómicos (score 91%) + 312 Locales Premium (score 78%)',
+        targets_en: '756 Gastronomic Tourists (score 91%) + 312 Premium Locals (score 78%)',
         strategies: [
-            { name: 'Receta Chef 40%', coc: 124.3, color: '#E31E24' },
-            { name: 'Flash 30%', coc: 89.7, color: '#f59e0b' },
-            { name: '2x1 Especial', coc: 76.4, color: '#10b981' },
-            { name: 'Loyalty 20%', coc: 52.1, color: '#8b5cf6' },
+            { name_es: 'Receta Chef 40%', name_en: 'Chef Recipe 40%', coc: 124.3, color: '#E31E24' },
+            { name_es: 'Flash 30%', name_en: 'Flash 30%', coc: 89.7, color: '#f59e0b' },
+            { name_es: '2x1 Especial', name_en: 'BOGO Special', coc: 76.4, color: '#10b981' },
+            { name_es: 'Loyalty 20%', name_en: 'Loyalty 20%', coc: 52.1, color: '#8b5cf6' },
         ],
         approved: false
     },
     {
         id: 'd2', priority: 'critical',
         store: 'San Isidro', storeId: 'zona_norte',
-        product: 'Salmón · Pescados', sku: '041',
+        product_es: 'Salmón · Pescados', product_en: 'Salmon · Seafood',
+        sku: '041',
         riskValue: 312_800, recoveryValue: 225_000,
         cocReturn: 108.7,
-        desc: '41 unidades · Vence en 3 días · Probabilidad exceso: 84%',
-        strategy: 'Flash 30%', channel: 'Push + Email',
-        targets: '1,856 Familias Premium (score 88%) + 487 Compradores Habituales (score 83%)',
+        desc_es: '41 unidades · Vence en 3 días · Probabilidad exceso: 84%',
+        desc_en: '41 units · Expires in 3 days · Overstock probability: 84%',
+        strategy_es: 'Flash 30%', strategy_en: 'Flash 30%',
+        channel: 'Push + Email',
+        targets_es: '1,856 Familias Premium (score 88%) + 487 Compradores Habituales (score 83%)',
+        targets_en: '1,856 Premium Families (score 88%) + 487 Regular Buyers (score 83%)',
         strategies: [
-            { name: 'Flash 30%', coc: 108.7, color: '#f59e0b' },
-            { name: 'Receta Chef 40%', coc: 95.2, color: '#E31E24' },
-            { name: '2x1 Especial', coc: 72.3, color: '#10b981' },
-            { name: 'Loyalty 20%', coc: 48.9, color: '#8b5cf6' },
+            { name_es: 'Flash 30%', name_en: 'Flash 30%', coc: 108.7, color: '#f59e0b' },
+            { name_es: 'Receta Chef 40%', name_en: 'Chef Recipe 40%', coc: 95.2, color: '#E31E24' },
+            { name_es: '2x1 Especial', name_en: 'BOGO Special', coc: 72.3, color: '#10b981' },
+            { name_es: 'Loyalty 20%', name_en: 'Loyalty 20%', coc: 48.9, color: '#8b5cf6' },
         ],
         approved: false
     },
     {
         id: 'd3', priority: 'high',
         store: 'Buenos Aires Centro', storeId: 'bsas_centro',
-        product: 'Palta · Frutas', sku: '004',
+        product_es: 'Palta · Frutas', product_en: 'Avocado · Produce',
+        sku: '004',
         riskValue: 94_600, recoveryValue: 71_000,
         cocReturn: 87.4,
-        desc: '67 unidades · Vence en 4 días · Probabilidad exceso: 76%',
-        strategy: 'Receta Chef 40%', channel: 'App + WhatsApp',
-        targets: '856 Ejecutivos en Lunch (score 78%) + 241 Compradores Esporádicos (score 71%)',
+        desc_es: '67 unidades · Vence en 4 días · Probabilidad exceso: 76%',
+        desc_en: '67 units · Expires in 4 days · Overstock probability: 76%',
+        strategy_es: 'Receta Chef 40%', strategy_en: 'Chef Recipe 40%',
+        channel: 'App + WhatsApp',
+        targets_es: '856 Ejecutivos en Lunch (score 78%) + 241 Compradores Esporádicos (score 71%)',
+        targets_en: '856 Business Lunch Clients (score 78%) + 241 Occasional Buyers (score 71%)',
         strategies: [
-            { name: 'Receta Chef 40%', coc: 87.4, color: '#E31E24' },
-            { name: 'Flash 30%', coc: 71.2, color: '#f59e0b' },
-            { name: 'Loyalty 20%', coc: 54.6, color: '#8b5cf6' },
-            { name: 'Flash 10%', coc: 28.3, color: '#4a9eff' },
+            { name_es: 'Receta Chef 40%', name_en: 'Chef Recipe 40%', coc: 87.4, color: '#E31E24' },
+            { name_es: 'Flash 30%', name_en: 'Flash 30%', coc: 71.2, color: '#f59e0b' },
+            { name_es: 'Loyalty 20%', name_en: 'Loyalty 20%', coc: 54.6, color: '#8b5cf6' },
+            { name_es: 'Flash 10%', name_en: 'Flash 10%', coc: 28.3, color: '#4a9eff' },
         ],
         approved: false
     },
     {
         id: 'd4', priority: 'high',
         store: 'Mar del Plata', storeId: 'mar_del_plata',
-        product: 'Langostinos · Pescados', sku: '113',
+        product_es: 'Langostinos · Pescados', product_en: 'King Prawns · Seafood',
+        sku: '113',
         riskValue: 241_200, recoveryValue: 178_400,
         cocReturn: 94.1,
-        desc: '35 unidades · Vence en 3 días · Probabilidad exceso: 80%',
-        strategy: 'Flash 30%', channel: 'Push + In-store',
-        targets: '2,856 Veraneantes (score 86%) + 487 Familias Marplatenses (score 72%)',
+        desc_es: '35 unidades · Vence en 3 días · Probabilidad exceso: 80%',
+        desc_en: '35 units · Expires in 3 days · Overstock probability: 80%',
+        strategy_es: 'Flash 30%', strategy_en: 'Flash 30%',
+        channel: 'Push + In-store',
+        targets_es: '2,856 Veraneantes (score 86%) + 487 Familias Marplatenses (score 72%)',
+        targets_en: '2,856 Vacationers (score 86%) + 487 Local Families (score 72%)',
         strategies: [
-            { name: 'Flash 30%', coc: 94.1, color: '#f59e0b' },
-            { name: '2x1 Especial', coc: 81.3, color: '#10b981' },
-            { name: 'Receta Chef 40%', coc: 76.8, color: '#E31E24' },
-            { name: 'Loyalty 20%', coc: 45.2, color: '#8b5cf6' },
+            { name_es: 'Flash 30%', name_en: 'Flash 30%', coc: 94.1, color: '#f59e0b' },
+            { name_es: '2x1 Especial', name_en: 'BOGO Special', coc: 81.3, color: '#10b981' },
+            { name_es: 'Receta Chef 40%', name_en: 'Chef Recipe 40%', coc: 76.8, color: '#E31E24' },
+            { name_es: 'Loyalty 20%', name_en: 'Loyalty 20%', coc: 45.2, color: '#8b5cf6' },
         ],
         approved: false
     },
     {
         id: 'd5', priority: 'medium',
         store: 'Quilmes', storeId: 'zona_sur',
-        product: 'Carne Picada · Carnes', sku: '031',
+        product_es: 'Carne Picada · Carnes', product_en: 'Ground Beef · Meat',
+        sku: '031',
         riskValue: 78_400, recoveryValue: 58_200,
         cocReturn: 68.9,
-        desc: '89 unidades · Vence en 4 días · Probabilidad exceso: 72%',
-        strategy: '2x1 Especial', channel: 'In-store + App',
-        targets: '1,845 Familias Ahorrativas (score 82%) + 241 Clientes Frecuentes (score 69%)',
+        desc_es: '89 unidades · Vence en 4 días · Probabilidad exceso: 72%',
+        desc_en: '89 units · Expires in 4 days · Overstock probability: 72%',
+        strategy_es: '2x1 Especial', strategy_en: 'BOGO Special',
+        channel: 'In-store + App',
+        targets_es: '1,845 Familias Ahorrativas (score 82%) + 241 Clientes Frecuentes (score 69%)',
+        targets_en: '1,845 Budget Families (score 82%) + 241 Frequent Shoppers (score 69%)',
         strategies: [
-            { name: '2x1 Especial', coc: 68.9, color: '#10b981' },
-            { name: 'Flash 30%', coc: 61.4, color: '#f59e0b' },
-            { name: 'Loyalty 20%', coc: 43.7, color: '#8b5cf6' },
-            { name: 'Flash 10%', coc: 21.2, color: '#4a9eff' },
+            { name_es: '2x1 Especial', name_en: 'BOGO Special', coc: 68.9, color: '#10b981' },
+            { name_es: 'Flash 30%', name_en: 'Flash 30%', coc: 61.4, color: '#f59e0b' },
+            { name_es: 'Loyalty 20%', name_en: 'Loyalty 20%', coc: 43.7, color: '#8b5cf6' },
+            { name_es: 'Flash 10%', name_en: 'Flash 10%', coc: 21.2, color: '#4a9eff' },
         ],
         approved: false
     },
 ];
 
 const AI_WINS = [
-    { rank: 1, store: 'San Isidro', product: 'Bife de Chorizo', strategy: 'Receta Chef 40%', coc: 138.2, saved: '$284K' },
-    { rank: 2, store: 'Mar del Plata', product: 'Salmón Fresco', strategy: 'Flash 30%', coc: 121.6, saved: '$196K' },
-    { rank: 3, store: 'Mendoza', product: 'Queso de Cabra', strategy: 'Pack Turístico', coc: 114.3, saved: '$143K' },
-    { rank: 4, store: 'CABA Centro', product: 'Palta Hass', strategy: 'Loyalty 20%', coc: 98.7, saved: '$87K' },
-    { rank: 5, store: 'Córdoba', product: 'Brócoli Premium', strategy: 'Combo Estudiante', coc: 84.2, saved: '$64K' },
+    { rank: 1, store: 'San Isidro', product_es: 'Bife de Chorizo', product_en: 'Sirloin Steak', strategy_es: 'Receta Chef 40%', strategy_en: 'Chef Recipe 40%', coc: 138.2, saved: '$284K' },
+    { rank: 2, store: 'Mar del Plata', product_es: 'Salmón Fresco', product_en: 'Fresh Salmon', strategy_es: 'Flash 30%', strategy_en: 'Flash 30%', coc: 121.6, saved: '$196K' },
+    { rank: 3, store: 'Mendoza', product_es: 'Queso de Cabra', product_en: 'Goat Cheese', strategy_es: 'Pack Turístico', strategy_en: 'Tourist Pack', coc: 114.3, saved: '$143K' },
+    { rank: 4, store: 'CABA Centro', product_es: 'Palta Hass', product_en: 'Hass Avocado', strategy_es: 'Loyalty 20%', strategy_en: 'Loyalty 20%', coc: 98.7, saved: '$87K' },
+    { rank: 5, store: 'Córdoba', product_es: 'Brócoli Premium', product_en: 'Premium Broccoli', strategy_es: 'Combo Estudiante', strategy_en: 'Student Combo', coc: 84.2, saved: '$64K' },
 ];
 
 const WASTE_TREND = [
-    { week: 'S-4', risk: 14.2, recovered: 8.9 },
-    { week: 'S-3', risk: 12.8, recovered: 9.4 },
-    { week: 'S-2', risk: 16.1, recovered: 12.6 },
-    { week: 'S-1', risk: 13.7, recovered: 11.2 },
-    { week: 'Esta', risk: 12.2, recovered: 8.6 },
+    { week_es: 'S-4', week_en: 'W-4', risk: 14.2, recovered: 8.9 },
+    { week_es: 'S-3', week_en: 'W-3', risk: 12.8, recovered: 9.4 },
+    { week_es: 'S-2', week_en: 'W-2', risk: 16.1, recovered: 12.6 },
+    { week_es: 'S-1', week_en: 'W-1', risk: 13.7, recovered: 11.2 },
+    { week_es: 'Esta', week_en: 'This', risk: 12.2, recovered: 8.6 },
 ];
 
 let currentModalDecision = null;
@@ -825,8 +976,9 @@ let currentModalDecision = null;
 // ══════════════════════════════════════════════════════════
 function updateClock() {
     const now = new Date();
-    const timeStr = now.toLocaleTimeString('es-AR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
-    const dateStr = now.toLocaleDateString('es-AR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const locale = currentLang === 'es' ? 'es-AR' : 'en-US';
+    const timeStr = now.toLocaleTimeString(locale, { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+    const dateStr = now.toLocaleDateString(locale, { weekday:'long', day:'numeric', month:'long', year:'numeric' });
     document.getElementById('header-time').textContent = timeStr;
     document.getElementById('header-date').textContent = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
 }
@@ -848,32 +1000,13 @@ function renderKPIStrip() {
     const totalRecovered = STORES.reduce((s,st) => s + st.waste.recovered, 0);
     const recoveryRate = Math.round((totalRecovered / totalWaste) * 100);
 
+    const locale = currentLang === 'es' ? 'es-AR' : 'en-US';
     const kpis = [
-        {
-            label: 'Ventas YTD · Red', value: `$${(totalRev/1000000).toFixed(1)}M`,
-            delta: pct(totalRev, totalRevPrev), period: 'vs año anterior',
-            accent: 100, cls: 'primary'
-        },
-        {
-            label: 'Clientes Activos · Red', value: totalClients.toLocaleString('es-AR'),
-            delta: pct(totalClients, totalClientsPrev), period: 'vs semana anterior',
-            accent: 75
-        },
-        {
-            label: 'Ticket Promedio · Red', value: `$${avgBasket.toLocaleString('es-AR')}`,
-            delta: pct(avgBasket, avgBasketPrev), period: 'vs mes anterior',
-            accent: 60
-        },
-        {
-            label: 'SKUs en Riesgo · Red', value: totalAtRisk,
-            delta: null, period: `en ${STORES.length} sucursales`,
-            valCls: 'amber', accent: 0, cls: 'alert'
-        },
-        {
-            label: 'Tasa Recuperación IA', value: `${recoveryRate}%`,
-            delta: { val: '+12pp', up: true }, period: 'vs mes anterior sin IA',
-            valCls: 'green', accent: recoveryRate
-        }
+        { label: t('kpi_sales'), value: `$${(totalRev/1000000).toFixed(1)}M`, delta: pct(totalRev, totalRevPrev), period: t('period_prev_year'), accent: 100, cls: 'primary' },
+        { label: t('kpi_clients'), value: totalClients.toLocaleString(locale), delta: pct(totalClients, totalClientsPrev), period: t('period_prev_week'), accent: 75 },
+        { label: t('kpi_basket'), value: `$${avgBasket.toLocaleString(locale)}`, delta: pct(avgBasket, avgBasketPrev), period: t('period_prev_month'), accent: 60 },
+        { label: t('kpi_risk'), value: totalAtRisk, delta: null, period: t('period_branches', {n: STORES.length}), valCls: 'amber', accent: 0, cls: 'alert' },
+        { label: t('kpi_recovery'), value: `${recoveryRate}%`, delta: { val: '+12pp', up: true }, period: t('period_no_ai'), valCls: 'green', accent: recoveryRate },
     ];
 
     document.getElementById('kpi-strip').innerHTML = kpis.map(k => `
@@ -903,25 +1036,28 @@ function renderDecisions() {
 
     document.getElementById('decisions-list').innerHTML = DECISIONS.map(d => {
         const prioClass = d.priority === 'critical' ? 'priority-critical' : d.priority === 'high' ? 'priority-high' : 'priority-medium';
+        const product = d[`product_${currentLang}`] || d.product_es;
+        const desc = d[`desc_${currentLang}`] || d.desc_es;
+        const strategy = d[`strategy_${currentLang}`] || d.strategy_es;
         return `
         <div class="decision-row" id="drow-${d.id}" onclick="openDecisionModal('${d.id}')">
             <div class="decision-priority-bar ${prioClass}"></div>
             <div class="decision-body">
                 <div class="decision-store">${d.store} · ${d.storeId.toUpperCase()}</div>
-                <div class="decision-product">${d.product}</div>
-                <div class="decision-detail">${d.desc}</div>
+                <div class="decision-product">${product}</div>
+                <div class="decision-detail">${desc}</div>
                 <div class="decision-tags">
-                    <span class="dtag red">Riesgo: $${(d.riskValue/1000).toFixed(0)}K</span>
-                    <span class="dtag green">Recuperación est.: $${(d.recoveryValue/1000).toFixed(0)}K</span>
-                    <span class="dtag amber">${d.strategy}</span>
+                    <span class="dtag red">${t('risk_tag').replace('${v}', (d.riskValue/1000).toFixed(0))}</span>
+                    <span class="dtag green">${t('recovery_tag').replace('${v}', (d.recoveryValue/1000).toFixed(0))}</span>
+                    <span class="dtag amber">${strategy}</span>
                     <span class="dtag">${d.channel}</span>
                 </div>
             </div>
             <div class="decision-action">
-                <div class="decision-recovery-label">RETORNO C/C</div>
+                <div class="decision-recovery-label">${t('coc_return')}</div>
                 <div class="decision-recovery">${d.cocReturn.toFixed(1)}%</div>
-                <button class="approve-btn ${d.approved?'approved':''}" id="abtn-${d.id}" onclick="event.stopPropagation(); approveDecision('${d.id}')">${d.approved ? '✓ Aprobado' : '▶ Aprobar'}</button>
-                <button class="preview-btn" onclick="event.stopPropagation(); openDecisionModal('${d.id}')">Ver detalle</button>
+                <button class="approve-btn ${d.approved?'approved':''}" id="abtn-${d.id}" onclick="event.stopPropagation(); approveDecision('${d.id}')">${d.approved ? t('approved') : t('approve')}</button>
+                <button class="preview-btn" onclick="event.stopPropagation(); openDecisionModal('${d.id}')">${t('see_detail')}</button>
             </div>
         </div>`;
     }).join('');
@@ -931,14 +1067,12 @@ function approveDecision(id) {
     const d = DECISIONS.find(d => d.id === id);
     d.approved = true;
     const btn = document.getElementById(`abtn-${id}`);
-    btn.textContent = '✓ Aprobado';
+    btn.textContent = t('approved');
     btn.classList.add('approved');
-    const row = document.getElementById(`drow-${id}`);
-    row.style.opacity = '0.55';
-    const pending = DECISIONS.filter(d => !d.approved).length;
-    document.getElementById('decisions-count').textContent = pending;
+    document.getElementById(`drow-${id}`).style.opacity = '0.55';
+    document.getElementById('decisions-count').textContent = DECISIONS.filter(d => !d.approved).length;
     if (currentModalDecision && currentModalDecision.id === id) {
-        document.getElementById('modal-approve').textContent = '✓ Campaña Aprobada';
+        document.getElementById('modal-approve').textContent = t('campaign_approved');
         document.getElementById('modal-approve').style.background = '#00d68f';
     }
 }
@@ -953,25 +1087,30 @@ function approveAll() {
 function openDecisionModal(id) {
     const d = DECISIONS.find(d => d.id === id);
     currentModalDecision = d;
-    document.getElementById('modal-title').textContent = `${d.product}`;
-    document.getElementById('modal-subtitle').textContent = `${d.store} · SKU ${d.sku} · ${d.desc}`;
+    const product = d[`product_${currentLang}`] || d.product_es;
+    const desc = d[`desc_${currentLang}`] || d.desc_es;
+    const strategy = d[`strategy_${currentLang}`] || d.strategy_es;
+    const targets = d[`targets_${currentLang}`] || d.targets_es;
+
+    document.getElementById('modal-title').textContent = product;
+    document.getElementById('modal-subtitle').textContent = `${d.store} · SKU ${d.sku} · ${desc}`;
 
     document.getElementById('modal-metrics').innerHTML = `
         <div class="modal-metric">
             <div class="modal-metric-val" style="color:var(--red);">$${(d.riskValue/1000).toFixed(0)}K</div>
-            <div class="modal-metric-lbl">VALOR EN RIESGO</div>
+            <div class="modal-metric-lbl">${t('value_at_risk')}</div>
         </div>
         <div class="modal-metric">
             <div class="modal-metric-val" style="color:var(--green);">$${(d.recoveryValue/1000).toFixed(0)}K</div>
-            <div class="modal-metric-lbl">RECUPERACIÓN ESTIMADA</div>
+            <div class="modal-metric-lbl">${t('est_recovery')}</div>
         </div>
         <div class="modal-metric">
             <div class="modal-metric-val" style="color:var(--green);">${d.cocReturn.toFixed(1)}%</div>
-            <div class="modal-metric-lbl">RETORNO CASH/CASH</div>
+            <div class="modal-metric-lbl">${t('coc_return_lbl')}</div>
         </div>
         <div class="modal-metric">
-            <div class="modal-metric-val">${d.strategy}</div>
-            <div class="modal-metric-lbl">ESTRATEGIA ÓPTIMA</div>
+            <div class="modal-metric-val">${strategy}</div>
+            <div class="modal-metric-lbl">${t('optimal_strategy')}</div>
         </div>
     `;
 
@@ -979,9 +1118,10 @@ function openDecisionModal(id) {
     document.getElementById('modal-strats').innerHTML = d.strategies.map(s => {
         const w = Math.max(10, (s.coc/maxCoc)*100);
         const isBest = s.coc === maxCoc;
+        const name = s[`name_${currentLang}`] || s.name_es;
         return `
         <div class="strat-row">
-            <div class="strat-name">${s.name} ${isBest ? '←' : ''}</div>
+            <div class="strat-name">${name} ${isBest ? '←' : ''}</div>
             <div class="strat-bar-wrap">
                 <div class="strat-bar-fill" style="width:${w}%; background:${s.color}${isBest?'':80}; opacity:${isBest?1:0.6};">
                     <span>${s.coc.toFixed(1)}%</span>
@@ -990,11 +1130,11 @@ function openDecisionModal(id) {
         </div>`;
     }).join('');
 
-    document.getElementById('modal-customers').textContent = d.targets;
+    document.getElementById('modal-customers').textContent = targets;
 
     const approveBtn = document.getElementById('modal-approve');
-    if (d.approved) { approveBtn.textContent = '✓ Campaña Aprobada'; approveBtn.style.background = '#00d68f'; }
-    else { approveBtn.textContent = '🚀 Aprobar y Lanzar'; approveBtn.style.background = ''; }
+    if (d.approved) { approveBtn.textContent = t('campaign_approved'); approveBtn.style.background = '#00d68f'; }
+    else { approveBtn.querySelector('span').textContent = currentLang === 'es' ? 'Aprobar y Lanzar' : 'Approve and Launch'; approveBtn.style.background = ''; }
 
     document.getElementById('modal-overlay').classList.add('open');
 }
@@ -1002,14 +1142,8 @@ function openDecisionModal(id) {
 function approveFromModal() {
     if (currentModalDecision) approveDecision(currentModalDecision.id);
 }
-
-function closeModal(e) {
-    if (e.target.id === 'modal-overlay') closeModalDirect();
-}
-function closeModalDirect() {
-    document.getElementById('modal-overlay').classList.remove('open');
-    currentModalDecision = null;
-}
+function closeModal(e) { if (e.target.id === 'modal-overlay') closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); currentModalDecision = null; }
 
 // ══════════════════════════════════════════════════════════
 // NETWORK ROWS
@@ -1020,8 +1154,7 @@ function renderNetworkRows() {
         const barW = Math.round((s.revenue/maxRev)*100);
         const revDelta = ((s.revenue - s.revPrev)/s.revPrev*100).toFixed(1);
         const barColor = s.health==='ok' ? '#00d68f' : s.health==='warn' ? '#f59e0b' : '#E31E24';
-        const healthLabel = { ok: '✓ OK', warn: '⚠ Atención', crit: '✕ Crítico' }[s.health];
-        const healthCls = `health-${s.health}`;
+        const type = s[`type_${currentLang}`] || s.type_es;
         return `
         <div class="network-row" onclick="showStoreDetail('${s.id}')">
             <div class="network-row-top">
@@ -1032,7 +1165,7 @@ function renderNetworkRows() {
                 <div class="network-revenue">$${(s.revenue/1000000).toFixed(1)}M</div>
             </div>
             <div class="network-row-bottom">
-                <div class="network-store-type">${s.type}</div>
+                <div class="network-store-type">${type}</div>
                 <div class="network-bar-wrap"><div class="network-bar" style="width:${barW}%; background:${barColor};"></div></div>
                 <div class="network-metrics">
                     <span class="nmval ${revDelta>=0?'good':'danger'}">${revDelta>=0?'▲':'▼'}${Math.abs(revDelta)}%</span>
@@ -1049,48 +1182,48 @@ function renderNetworkRows() {
 function renderScorecards() {
     document.getElementById('store-scorecards').innerHTML = STORES.map(s => {
         const revDelta = ((s.revenue-s.revPrev)/s.revPrev*100).toFixed(1);
-        const basketDelta = ((s.avgBasket-s.basketPrev)/s.basketPrev*100).toFixed(1);
         const recoveryRate = Math.round((s.waste.recovered/s.waste.current)*100);
         const aiOpp = Math.round((s.waste.current - s.waste.recovered) * 0.65 / 1000);
-        const healthLabel = { ok: '✓ Saludable', warn: '⚠ Atención', crit: '✕ Crítico' }[s.health];
-        const healthCls = `health-${s.health}`;
+        const healthLabel = { ok: t('health_s_ok'), warn: t('health_s_warn'), crit: t('health_s_crit') }[s.health];
+        const type = s[`type_${currentLang}`] || s.type_es;
+        const locale = currentLang === 'es' ? 'es-AR' : 'en-US';
         return `
         <div class="scorecard" onclick="showStoreDetail('${s.id}')">
             <div class="sc-header">
                 <div>
                     <div class="sc-name">${s.name}</div>
-                    <div class="sc-type">${s.type} · ${s.size}</div>
+                    <div class="sc-type">${type} · ${s.size}</div>
                 </div>
-                <div class="sc-health ${healthCls}">${healthLabel}</div>
+                <div class="sc-health health-${s.health}">${healthLabel}</div>
             </div>
             <div class="sc-metrics">
                 <div class="sc-m">
                     <div class="sc-m-val" style="color:${revDelta>=0?'var(--green)':'var(--red)'}; font-size:0.8rem;">${revDelta>=0?'▲':'▼'} ${Math.abs(revDelta)}%</div>
-                    <div class="sc-m-lbl">Ventas YTD</div>
+                    <div class="sc-m-lbl">${t('sales_ytd')}</div>
                 </div>
                 <div class="sc-m">
-                    <div class="sc-m-val">$${s.avgBasket.toLocaleString('es-AR')}</div>
-                    <div class="sc-m-lbl">Ticket prom.</div>
+                    <div class="sc-m-val">$${s.avgBasket.toLocaleString(locale)}</div>
+                    <div class="sc-m-lbl">${t('avg_ticket')}</div>
                 </div>
                 <div class="sc-m">
-                    <div class="sc-m-val">${s.clients.toLocaleString('es-AR')}</div>
-                    <div class="sc-m-lbl">Clientes</div>
+                    <div class="sc-m-val">${s.clients.toLocaleString(locale)}</div>
+                    <div class="sc-m-lbl">${t('clients')}</div>
                 </div>
                 <div class="sc-m">
                     <div class="sc-m-val" style="color:var(--amber);">${s.atRisk}</div>
-                    <div class="sc-m-lbl">SKUs riesgo</div>
+                    <div class="sc-m-lbl">${t('risk_skus')}</div>
                 </div>
                 <div class="sc-m">
                     <div class="sc-m-val" style="color:var(--green);">${recoveryRate}%</div>
-                    <div class="sc-m-lbl">Rec. IA</div>
+                    <div class="sc-m-lbl">${t('ai_rec')}</div>
                 </div>
                 <div class="sc-m">
                     <div class="sc-m-val">${s.employees||'—'}</div>
-                    <div class="sc-m-lbl">Empleados</div>
+                    <div class="sc-m-lbl">${t('employees')}</div>
                 </div>
             </div>
             <div class="sc-footer">
-                <div class="sc-ai-opp">Oportunidad IA: <strong>$${aiOpp}K</strong> recuperables</div>
+                <div class="sc-ai-opp">${t('ai_opp')}: <strong>$${aiOpp}K</strong> ${t('recoverable')}</div>
                 <div class="sc-manager">${s.manager}</div>
             </div>
         </div>`;
@@ -1102,20 +1235,19 @@ function renderScorecards() {
 // ══════════════════════════════════════════════════════════
 function renderWasteChart() {
     const maxVal = Math.max(...WASTE_TREND.map(w => Math.max(w.risk, w.recovered)));
-    const chartEl = document.getElementById('waste-chart');
-    const labelsEl = document.getElementById('waste-chart-labels');
-
-    chartEl.innerHTML = WASTE_TREND.map(w => {
+    document.getElementById('waste-chart').innerHTML = WASTE_TREND.map(w => {
         const riskH = Math.round((w.risk/maxVal)*100);
         const recH = Math.round((w.recovered/maxVal)*100);
+        const riskLbl = t('chart_risk_label').replace('${v}', w.risk);
+        const recLbl = t('chart_rec_label').replace('${v}', w.recovered);
         return `
         <div class="bar-group">
-            <div class="bar bar-risk" style="height:${riskH}%;" data-val="$${w.risk}M en riesgo"></div>
-            <div class="bar bar-recovered" style="height:${recH}%;" data-val="$${w.recovered}M recuperado"></div>
+            <div class="bar bar-risk" style="height:${riskH}%;" data-val="${riskLbl}"></div>
+            <div class="bar bar-recovered" style="height:${recH}%;" data-val="${recLbl}"></div>
         </div>`;
     }).join('');
 
-    labelsEl.innerHTML = WASTE_TREND.map(w=>`<div class="bar-label">${w.week}</div>`).join('');
+    document.getElementById('waste-chart-labels').innerHTML = WASTE_TREND.map(w=>`<div class="bar-label">${w[`week_${currentLang}`]||w.week_es}</div>`).join('');
 
     const totalRisk = WASTE_TREND.reduce((s,w)=>s+w.risk,0);
     const totalRec = WASTE_TREND.reduce((s,w)=>s+w.recovered,0);
@@ -1123,11 +1255,11 @@ function renderWasteChart() {
     document.getElementById('waste-chart-footer').innerHTML = `
         <div class="chart-stat">
             <div class="chart-stat-val" style="color:var(--red);">$${totalRisk.toFixed(1)}M</div>
-            <div class="chart-stat-lbl">TOTAL EN RIESGO (4 SEM)</div>
+            <div class="chart-stat-lbl">${t('chart_total_risk')}</div>
         </div>
         <div class="chart-stat">
             <div class="chart-stat-val" style="color:var(--green);">$${totalRec.toFixed(1)}M</div>
-            <div class="chart-stat-lbl">RECUPERADO POR IA (${avgRec}%)</div>
+            <div class="chart-stat-lbl">${t('chart_recovered').replace('${pct}', avgRec)}</div>
         </div>`;
 }
 
@@ -1139,8 +1271,8 @@ function renderWins() {
         <div class="win-row">
             <div class="win-rank">#${w.rank}</div>
             <div class="win-body">
-                <div class="win-name">${w.product}</div>
-                <div class="win-detail">${w.store} · ${w.strategy}</div>
+                <div class="win-name">${w[`product_${currentLang}`]||w.product_es}</div>
+                <div class="win-detail">${w.store} · ${w[`strategy_${currentLang}`]||w.strategy_es}</div>
             </div>
             <div class="win-metric">
                 <div class="win-coc">${w.coc.toFixed(1)}%</div>
@@ -1160,20 +1292,20 @@ function renderWasteSummary() {
 
     document.getElementById('waste-summary').innerHTML = `
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-size:0.72rem; color:var(--text-3);">Exposición bruta (mes)</div>
+            <div style="font-size:0.72rem; color:var(--text-3);">${t('gross_exposure')}</div>
             <div style="font-family:var(--mono); color:var(--red);">$${(totalWaste/1000000).toFixed(2)}M</div>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center;">
-            <div style="font-size:0.72rem; color:var(--text-3);">Recuperado por IA</div>
+            <div style="font-size:0.72rem; color:var(--text-3);">${t('recovered_ai')}</div>
             <div style="font-family:var(--mono); color:var(--green);">$${(totalRec/1000000).toFixed(2)}M</div>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; padding-top:0.5rem; border-top:1px solid var(--border);">
-            <div style="font-size:0.72rem; color:var(--text-2); font-weight:600;">Exposición neta</div>
+            <div style="font-size:0.72rem; color:var(--text-2); font-weight:600;">${t('net_exposure')}</div>
             <div style="font-family:var(--mono); font-size:1.1rem; color:var(--amber);">$${(netExposure/1000000).toFixed(2)}M</div>
         </div>
         <div style="margin-top:0.5rem;">
             <div style="display:flex; justify-content:space-between; font-size:0.68rem; color:var(--text-3); margin-bottom:0.375rem;">
-                <span>Tasa de captura IA</span><span style="color:var(--green); font-family:var(--mono);">${aiCapture}%</span>
+                <span>${t('ai_capture')}</span><span style="color:var(--green); font-family:var(--mono);">${aiCapture}%</span>
             </div>
             <div style="background:var(--bg-4); border-radius:2px; height:8px; overflow:hidden;">
                 <div style="height:100%; width:${aiCapture}%; background:var(--green); border-radius:2px;"></div>
@@ -1194,8 +1326,8 @@ function renderWasteSummary() {
             <span style="font-family:var(--mono); color:var(--green); font-size:0.68rem;">10K iter · IC 95%</span>
         </div>
         <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.75rem;">
-            <span style="color:var(--text-3);">Último reentrenamiento</span>
-            <span style="font-family:var(--mono); color:var(--text-2); font-size:0.68rem;">Hoy 04:30 AM</span>
+            <span style="color:var(--text-3);">${t('last_retrain')}</span>
+            <span style="font-family:var(--mono); color:var(--text-2); font-size:0.68rem;">${t('today')} 04:30 AM</span>
         </div>`;
 }
 
@@ -1203,38 +1335,21 @@ function renderWasteSummary() {
 // ALERTS
 // ══════════════════════════════════════════════════════════
 function renderAlerts() {
-    const alerts = [
-        { type: 'crit', text: '⚡ Mendoza: 4 SKUs vencen mañana · $186K en riesgo' },
-        { type: 'crit', text: '⚡ San Isidro: Salmón 41 unidades · 3 días' },
-        { type: 'warn', text: '⚠ Mendoza: Clientes locales con tendencia ↓ −12.8%' },
-        { type: 'warn', text: '⚠ Quilmes: Frecuencia de visita cayó 2.4→2.2x' },
-        { type: 'info', text: '📊 Modelo reentrenado con 847K registros nuevos' },
-        { type: 'info', text: '🏆 Campaña Mar del Plata: 61% conversión · $178K recuperados' },
-        { type: 'info', text: '📅 Partido Boca-River el 12/09 · Ajustar stock Carnes+Bebidas' },
-        { type: 'warn', text: '⚠ Córdoba: Período de exámenes · Demanda energizantes +40%' },
-    ];
-    document.getElementById('alerts-scroll').innerHTML = alerts.map(a=>`
-        <div class="alert-chip ${a.type}" onclick="handleAlert('${a.type}')">${a.text}</div>`).join('');
+    const types = ['crit','crit','warn','warn','info','info','info','warn'];
+    const alerts = T[currentLang].alerts;
+    document.getElementById('alerts-scroll').innerHTML = alerts.map((text,i)=>`
+        <div class="alert-chip ${types[i]}">${text}</div>`).join('');
 }
 
-// ══════════════════════════════════════════════════════════
-// UTILITIES
-// ══════════════════════════════════════════════════════════
-function showStoreDetail(storeId) {
-    const store = STORES.find(s=>s.id===storeId);
-    // In a real system this would navigate to the ops dashboard filtered to this store
-    console.log('Navigating to store detail:', storeId);
-}
-
-function handleAlert(type) { /* In production: navigate to relevant section */ }
+function showStoreDetail(storeId) { console.log('Store:', storeId); }
+function handleAlert(type) {}
 
 function exportDashboard() {
-    alert('Informe ejecutivo PDF generado: DIA_Panel_Ejecutivo_' + new Date().toLocaleDateString('es-AR').replace(/\//g,'-') + '.pdf');
+    const locale = currentLang === 'es' ? 'es-AR' : 'en-US';
+    const msg = t('export_msg');
+    alert(msg + new Date().toLocaleDateString(locale).replace(/\//g,'-') + '.pdf');
 }
 
-// ══════════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════════
 function init() {
     renderKPIStrip();
     renderDecisions();
